@@ -3,59 +3,42 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
-	<title>纯原生js日期时间选择 by：羯瑞</title>
-	
+	<title>rui-datepicker公农历日期选择器</title>
 	<style>
-		*{margin:0;padding:0;}
-		h1 {background-color: #19b5ee;color: #fff;font-size: 25px;text-align: center;padding: 10px;}
-		p{margin:5px 5px 0;}
-		input,#demo1{width: 80%;height: 40px;font-size: 18px;border: 1px solid #19b5ee;border-radius: 5px;margin: 20px 5% 0 5%;padding: 5px; ime-mode:disabled;}
+		h1,h2,h3,h4,h5,h6,body,p{margin:0;}
+		body{background: #444;font-size: 14px/1.2;}
+		a,body{color: #fc0;}
+		a{text-decoration: none;}
+		header{background: #fc0;color: #333;padding:10px;text-align: center;}
+		header p{margin:10px 0;}
+		header a{display: inline-block;height: 34px;padding:0 16px;line-height: 32px;background: #333;color: #fc0;border-radius: 5px;}
+		.date_input{text-align: center;margin:16px 0 0;}
+		.date_input p{padding:0 0 8px;font-size: 1.4em}
+		.date_input input{width: 80%;height: 50px;font-size: 18px;border: 1px solid #444;border-radius: 5px;padding: 5px;margin:0 10%;box-sizing: border-box;}
 	</style>
 	<link rel="stylesheet" href="./rui-datepicker.css">
 	<script src="./rui-datepicker.js"></script>
 </head>
 <body>
-	<h1>纯原生js日期时间选择 by：羯瑞</h1>
-	<p>注：1940-2-8至2018-12-31</p>
-	<p>data-type</p>
-	<p>默认:0; 农历_1, 公历_0</p>
-	<p>data-date</p>
-	<p>默认:当前时间；例：2017-02-09</p>
-	<p>data-hour</p>
-	<p>默认:未知；例：5</p>
-	<p>data-toid-date</p>
-	<p>默认:空；需要赋值的input id</p>
-	<p>data-toid-hour</p>
-	<p>默认:空；需要赋值的input 时辰 id;默认以这个参数为判定</p>
-	<div>
-		<input id="demo1" type="text" data-toid-date="date" name="input_date" placeholder="日期选择" readonly="readonly" data-type="1" /></input>
+	<header>
+		<h1>公农历日期选择器</h1>
+		<p>@author：羯瑞</p>
+		<a href="https://github.com/chenruifu/libs">GitHub</a>
+	</header>
+	<div class="date_input">
+		<p>不带时辰</p>
+		<input id="demo1" type="text" data-toid-date="date" name="input_date" placeholder="日期选择不带时辰" readonly="readonly" data-type="1" /></input>
 		<input type="hidden" id="date" name="date">
 	</div>
-
-	<div style="margin:10px 0 0">
-		<input id="demo2" type="text" data-toid-date="date1" data-toid-hour="hour1" name="input_date" data-hour="7" placeholder="日期时辰选择" readonly="readonly"/>
+	<div class="date_input">
+		<p>带时辰</p>
+		<input id="demo2" type="text" data-toid-date="date1" data-toida-hour="hour1" name="input_date" data-hour="2" placeholder="日期选择带时辰" readonly="readonly"/>
 		<input type="hidden" id="date1" name="date">
 		<input type="hidden" id="hour1" name="hour">
 	</div>
-
 	<script>
-		var calendar = new ruiDatepicker().init('#demo1');
-		var calendar = new ruiDatepicker().init('#demo2');
-		console.log(calendar);
+		var date1 = new ruiDatepicker().init('#demo1');
+		var date2 = new ruiDatepicker().init('#demo2');
 	</script>
-	<p>填充高度</p>
-	<p>填充高度</p>
-	<p>填充高度</p>
-	<p>填充高度</p>
-	<p>填充高度</p>
-	<p>填充高度</p>
-	<p>填充高度</p>
-	<p>填充高度</p>
-	<p>填充高度</p>
-	<p>填充高度</p>
-	<p>填充高度</p>
-	<p>填充高度</p>
-	<p>填充高度</p>
-	<p>填充高度</p>
 </body>
 </html>
