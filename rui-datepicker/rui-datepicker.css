@@ -5,6 +5,18 @@
 	from {-webkit-transform: translate(-50%, -100%);transform: translate(-50%, -100%);-moz-transform: translate(-50%, -100%);-ms-transform: translate(-50%, -100%);-o-transform: translate(-50%, -100%)}
 	to {-webkit-transform: translate(-50%, 0);transform: translate(-50%, 0);-moz-transform: translate(-50%,0);-o-transform: translate(-50%, 0);-ms-transform: translate(-50%, 0)}
 }
+@keyframes slideInUp {
+	from {-webkit-transform: translate(-50%, -100%);transform: translate(-50%, -100%);-moz-transform: translate(-50%, -100%);-ms-transform: translate(-50%, -100%);-o-transform: translate(-50%, -100%)}
+	to {-webkit-transform: translate(-50%, 0);transform: translate(-50%, 0);-moz-transform: translate(-50%,0);-o-transform: translate(-50%, 0);-ms-transform: translate(-50%, 0)}
+}
+@-ms-keyframes slideInUp {
+	from {-webkit-transform: translate(-50%, -100%);transform: translate(-50%, -100%);-moz-transform: translate(-50%, -100%);-ms-transform: translate(-50%, -100%);-o-transform: translate(-50%, -100%)}
+	to {-webkit-transform: translate(-50%, 0);transform: translate(-50%, 0);-moz-transform: translate(-50%,0);-o-transform: translate(-50%, 0);-ms-transform: translate(-50%, 0)}
+}
+@-moz-keyframes slideInUp {
+	from {-webkit-transform: translate(-50%, -100%);transform: translate(-50%, -100%);-moz-transform: translate(-50%, -100%);-ms-transform: translate(-50%, -100%);-o-transform: translate(-50%, -100%)}
+	to {-webkit-transform: translate(-50%, 0);transform: translate(-50%, 0);-moz-transform: translate(-50%,0);-o-transform: translate(-50%, 0);-ms-transform: translate(-50%, 0)}
+}
 .date_roll {position: relative;width: 100%;height: auto;overflow: hidden;font-weight: bold;background-color: transparent;-webkit-mask: -webkit-gradient(linear, 0% 50%, 0% 100%, from(#debb47), to(rgba(36, 142, 36, 0)));-webkit-mask: -webkit-linear-gradient(top, #debb47 50%, rgba(36, 142, 36, 0));}
 .date_roll>div{font-size: 2em;height: 6em;float: left;background-color: transparent;position: relative;overflow: hidden;width: 33.33%;}
 .date_roll_more>div{width: 25%;}
