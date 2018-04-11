@@ -53,7 +53,7 @@ window.ruiDatepicker = (function() {
 		this.minY = 1940;
 		this.minM = 1,
 		this.minD = 1,
-		this.maxY = 2019,
+		this.maxY = 2020,
 		this.maxM = 12,
 		this.maxD = 31,
 		this.type = 1 //0公历，1农历
@@ -459,7 +459,7 @@ window.ruiDatepicker = (function() {
 					//当年份到达最大值
 					if (yyVal == passY - 1) {
 						if(_self.type){
-							maxM = _self.maxM - 2;
+							maxM = _self.maxM - 1;
 						}else{
 							maxM = _self.maxM - 1;
 						}
@@ -519,11 +519,11 @@ window.ruiDatepicker = (function() {
 					var maxD = maxMonthDays - 1;
 					var minD = 0;
 					//当年份月份到达最大值
-					if (yyVal == passY - 1 && 11 == mmVal + 1) {
+					if (yyVal == passY - 1 && 12 == mmVal + 1) {
 						if(_self.type){
-							maxD = _self.maxD - 7;
+							maxD = _self.maxD - 15;
 						}else{
-							maxD = _self.maxD - 2;
+							maxD = _self.maxD - 1;
 						}
 						// maxD = _self.maxD - 1;
 					}
@@ -1005,7 +1005,7 @@ window.ruiDatepicker = (function() {
 							//当年份到达最大值
 							if (yyVal == passY - 1) {
 								if(_self.type){
-									maxM = _self.maxM - 2;
+									maxM = _self.maxM - 1;
 								}else{
 									maxM = _self.maxM - 1;
 								}
@@ -1043,11 +1043,11 @@ window.ruiDatepicker = (function() {
 							var maxD = maxMonthDays - 1;
 							var minD = 0;
 							//当年份月份到达最大值
-							if (yyVal == passY - 1 && 11 == mmVal + 1) {
+							if (yyVal == passY - 1 && 12 == mmVal + 1) {
 								if(_self.type){
-									maxD = _self.maxD - 7;
+									maxD = _self.maxD - 15;
 								}else{
-									maxD = _self.maxD - 2;
+									maxD = _self.maxD - 1;
 								}
 								// maxD = _self.maxD - 1;
 							}
