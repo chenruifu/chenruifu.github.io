@@ -1,0 +1,260 @@
+图片处理   
+1.必须有gd库---php_gd2.dll
+2.php.ini必须开启---extension=php_gd2.dll
+3.默认都是开启的
+
+常用的网页图片类型
+gif---无损压缩格式，最多支持256色，可以存多幅图像，支持透明（透明/不透明）
+jpg/jpeg---有损压缩格式，24bit真彩色；应用：图片
+png---无损压缩，真彩色，支持透明（可设置透明度）；应用：图标
+-----------------------------------
+getimagesize — 取得图像大小，返回数组
+索引2是图像类型的标记：
+1 = GIF		2 = JPG		3 = PNG
+4 = SWF		5 = PSD		6 = BMP
+7 = TIFF(intel byte order)	8 = TIFF(motorola byte order)
+9 = JPC		10 = JP2		11 = JPX
+12 = JB2		13 = SWC	14 = IFF
+15 = WBMP	16 = XBM
+
+getimagesize('logo.png')；
+Array
+(
+    [0] => 137	//宽度
+    [1] => 60	//高度
+    [2] => 3	//图像类型的标记
+    [3] => width="137" height="60"
+    [bits] => 8	//颜色的位数
+    [mime] => image/png	//图片的mine类型
+)
+----------------------------
+imagecreatefrompng — 由文件或 URL 创建一个新图象；返回图象资源
+imagecreatefromgif — 由文件或 URL 创建一个新图象；返回图象资源
+imagecreatefromjpeg — 由文件或 URL 创建一个新图象；返回图象资源
+...
+imagecreatefromstring — 从字符串中的图像流新建一图像；返回图象资源
+
+imagesx — 取得图像宽度
+imagesy — 取得图像高度
+
+$img1=imagecreatefrompng('logo.png');
+echo imagesx($img1);	//返回137
+//注意：图片的类型得跟函数名对应，否则报错
+------------------------------------
+image_type_to_extension — 取得图像类型的文件后缀
+image_type_to_mime_type — 取得 getimagesize，exif_read_data，exif_thumbnail，exif_imagetype 所返回的图像类型的 MIME 类型
+
+$imgArr=getimagesize('logo.png');
+echo image_type_to_extension($imgArr[2]);		//.png
+echo image_type_to_extension($imgArr[2],false);	//png
+echo image_type_to_mime_type($imgArr[2]);		//image/png
+----------------------------------
+imagecreate — 新建一个基于调色板的图像
+imagecreatetruecolor — 新建一个真彩色图像 
+imagegif — 输出图象到浏览器或文件
+imagepng
+imagegif
+imagestring
+imagecolorallocate — 为一幅图像分配颜色
+
+header("content-type:image/gif");	//前面不能有任何输出
+$jpeg1= imagecreate(200,300);
+imagegif($jpeg1);	//显示图片
+--------------------------------
+imagecolorstotal — 取得一幅图像的调色板中颜色的数目  
+
+$gif= imagecreate(200,300);
+imagecolorallocate($gif, 255, 0, 0);
+echo imagecolorstotal($gif);		//1
+------------------------------
+imagefill — 区域填充
+
+header("content-type:image/gif");
+$gif= imagecreatetruecolor(200,200);		//创建真彩色的图片
+$red=imagecolorallocate($gif, 255, 0, 0);	//调色板的图片直接填充
+imagefill($gif, 0, 0, $red);			//颜色填充
+imagegif($gif);		
+----------------------------------------------
+imagedestroy — 销毁一图像 
+
+imagedestroy($gif);	//创建图像后都要销毁
+----------------------------------------
+eval — 把字符串作为PHP代码执行 
+
+eval("echo 123;"); //必须有分号，否则报错
+----------------------------
+***ob_clean — 清空（擦掉）输出缓冲区 
+=========================================
+imagecolorallocate — 为一幅图像分配颜色
+imagecolorallocatealpha — 为一幅图像分配颜色 + alpha 
+imagecopy — 拷贝图像的一部分 
+imagefill — 区域填充
+mt_rand — 生成更好的随机数 
+imagefilltoborder — 区域填充到指定颜色的边界为止 
+imagesettile — 设定用于填充的贴图 
+
+//把logo.png图片平铺到新建的真彩色图像中
+header("content-type:image/gif");
+$img=imagecreatefrompng('logo.png');
+$gif= imagecreatetruecolor(200,200);
+imagesettile($gif, $img);
+$red=imagecolorallocate($gif, 255, 0, 0);
+imagefill($gif, 0, 0,IMG_COLOR_TILED);
+imagegif($gif);
+----------
+//随机的基于调色板的图像
+$gif= imagecreate(200,200);
+imagecolorallocate($gif, mt_rand(0,255), mt_rand(0,255), mt_rand(0,255));
+imagegif($gif);
+================================
+imageline — 画一条线段 
+imagedashedline — 画一虚线
+参数（图像资源，起始X，起始Y，终止X，终止Y，颜色）
+
+header("content-type:image/jpeg");
+$img= imagecreatetruecolor(300,300);
+$color=imagecolorallocate($img,255,255,255);//设置颜色
+imageline($img,0,0,300,300,$color);
+imageline($img,300,0,0,300,$color);
+imagedashedline($img,150,0,150,300,$color);//不推荐
+imagejpeg($img);
+-----------------------------------------
+imagesetstyle — 设定画线的风格 
+imagesetthickness — 设定画线的宽度 
+
+header("content-type:image/jpeg");
+$img= imagecreatetruecolor(300,300);
+$white=imagecolorallocate($img,255,255,255);
+$blue=imagecolorallocate($img,20,20,255);
+//设置线的样式，按像素点计算，两点白色，一点蓝色
+imagesetstyle($img,array($white,$white,$blue));	
+//设置线样式的粗细
+imagesetthickness($img, 10);
+imageline($img,0,0,300,300,IMG_COLOR_STYLED);
+imageline($img,300,0,0,300,IMG_COLOR_STYLED);
+imagejpeg($img);
+-------------------------------------------------------
+imagesetbrush — 设定画线用的画笔图像
+
+header("content-type:image/jpeg");
+$img= imagecreatetruecolor(300,300);
+$box=imagecreate(10,10);	//设置画笔大小
+$blue=imagecolorallocate($box,20,20,255);//设置画笔颜色
+imagesetbrush($img,$box);//使用画笔
+imageline($img,0,0,300,300,IMG_COLOR_BRUSHED);
+//参数设置IMG_COLOR_BRUSHED
+imagejpeg($img);
+=====================================
+imagesetpixel — 画一个单一像素
+imagesetpixel(图像资源，X坐标，Y坐标，颜色);
+
+//画白底，红色边框的图片
+header("content-type:image/jpeg");
+$img= imagecreatetruecolor(150,150);
+$x=imagesx($img);//取得图像资源的宽
+$y=imagesy($img);//取得图像资源的高
+$white=imagecolorallocate($img,255,255,255);//设置白色
+$red=imagecolorallocate($img, 255, 0, 0);//设置红色
+imagefill($img,0,0,$white);//填充白底
+//上下边框
+for($i=0;$i<$y;$i++){//循环画点，连成线
+	imagesetpixel($img,$i,0,$red);
+	imagesetpixel($img,$i,$y-1,$red);
+}
+//左右边框
+for($i=0;$i<$x;$i++){//循环画点，连成线
+	imagesetpixel($img,0,$i,$red);
+	imagesetpixel($img,$x-1,$i,$red);
+}
+imagejpeg($img);
+-----------------------------------------------------
+imagerectangle — 画一个矩形
+imagerectangle(图像资源，左上角起始X，Y，右下角结束X，Y，颜色);
+
+//画白底，红色边框的图片，跟上面类似
+header("content-type:image/jpeg");
+$img= imagecreatetruecolor(150,150);
+$x=imagesx($img);
+$y=imagesy($img);
+$white=imagecolorallocate($img,255,255,255);
+$red=imagecolorallocate($img, 255, 0, 0);
+imagefill($img,0,0,$white);
+imagerectangle($img,0, 0, $x-1, $y-1, $red); //设置矩形
+imagejpeg($img);
+--------------------------------
+imagefilledrectangle — 画一矩形并填充
+imagefilledrectangle(图像资源，左上角起始X，Y，右下角结束X，Y，颜色);
+
+header("content-type:image/jpeg");
+$img= imagecreatetruecolor(150,150);
+$x=imagesx($img);
+$y=imagesy($img);
+$white=imagecolorallocate($img,255,255,255);
+$red=imagecolorallocate($img, 255, 0, 0);
+imagefill($img,0,0,$white);
+imagefilledrectangle($img,30, 30, 60, 60, $red);
+imagejpeg($img);
+=============================================
+存储图像
+bool imagejpeg  ( resource $image  [, string $filename  [, int $quality  ]] )
+bool imagepng  ( resource $image  [, string $filename  ] )
+bool imagegif  ( resource $image  [, string $filename  ] )
+
+$img=imagecreate(200, 200);//创建调色板图像
+imagecolorallocate($img,255,0,0);//填充颜色红色
+imagejpeg($img,'abc.c');//存储图像，其他两个参数一样，jpeg可以设置压缩程度
+echo "<img src='abc.c'>";//html输出有图像
+-----------------------------------------------
+进制转换
+decbin — 十进制转换为二进制 
+decoct — 十进制转换为八进制 
+dechex — 十进制转换为十六进制
+bindec — 二进制转换为十进制 
+octdec — 八进制转换为十进制
+hexdec — 十六进制转换为十进制 
+-----------------------------------------------------
+imagecolorat — 取得某像素的颜色索引值 
+imagecolorsforindex — 取得某索引的颜色 
+
+$img=imagecreatefromjpeg('photo.jpg');
+$index=imagecolorat($img,0,0);//获取坐标0,0的颜色索引值
+$pxColor=imagecolorsforindex($img, $index);//返回一个数组
+print_r($pxColor);
+//Array ( [red] => 33 [green] => 57 [blue] => 43 [alpha] => 0 ) 
+===============================
+imageellipse — 画一个椭圆 
+imagefilledellipse — 画一椭圆并填充 
+
+imageellipse(图像资源，圆心X，圆心Y，宽度， 高度 , 颜色);
+
+$img=imagecreatetruecolor(300,300);
+$red=imagecolorallocate($img,250,0,0);
+$white=imagecolorallocate($img,250,255,255);
+imagefill($img, 0, 0, $white);
+imageellipse($img, 150,150, 160, 160,$red);//圆形
+//imagefilledellipse($img, 150,150, 160, 160,$red);//填充的圆形
+header("content-type:image/jpeg");
+imagejpeg($img);
+----------------------------------------
+imagearc — 画椭圆弧
+imagearc(image, cx, cy, width, height, start, end, color)
+
+imagefilledarc — 画一椭圆弧且填充 
+imagefilledarc(image, cx, cy, width, height, start, end, color, style)
+起始角度是3点钟方向，0度开始。
+
+//一个平分4份的饼图
+$img=imagecreatetruecolor(300,300);
+$red=imagecolorallocate($img,250,0,0);
+$green=imagecolorallocate($img, 0, 255,0);
+$blue=imagecolorallocate($img, 0, 0,255);
+$block=imagecolorallocate($img, 0, 0,0);
+$white=imagecolorallocate($img,250,255,255);
+imagefill($img, 0, 0, $white);
+imagefilledarc($img, 150, 150, 120, 80, 0, 90, $red ,IMG_ARC_EDGED);
+imagefilledarc($img, 150, 150, 120, 80, 90,180, $green ,IMG_ARC_EDGED);
+imagefilledarc($img, 150, 150, 120, 80, 180,270, $blue ,IMG_ARC_EDGED);
+imagefilledarc($img, 150, 150, 120, 80, 270,360, $block ,IMG_ARC_EDGED);
+header("content-type:image/jpeg");
+imagejpeg($img);
+=================================

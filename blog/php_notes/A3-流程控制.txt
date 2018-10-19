@@ -1,0 +1,111 @@
+1.if语句
+if(表达式1){
+    代码段1
+}elseif(表达式2){
+    代码段2
+}else{
+    代码段...
+}
+
+注意：
+if语句中，一个条件成立，其他分支不执行
+if中表达式只能是布尔型
+------ elseif与else if的区别 ------
+在类似花括号（{}）情况下使用相同
+如果用冒号（：）来定义if/elseif条件，就不能用else if,否则报错
+
+$a=41;
+if($a<20):
+	echo '小于20';
+elseif($a<40):
+	echo '小于40';
+else:
+	echo '大于40';
+endif;
+
+------------------------------------
+
+2.switch分支语句
+$a=4;
+switch ($a) {
+	case 1:
+		echo '1';
+		break;
+	case 2:
+		echo '2';
+		//if()elseif()
+		break;
+	default:
+		echo '$a>3';
+		break;
+}
+
+注意：
+表达式一般为变量
+如果不加break;后面的case都会执行
+switch分支语句：当值有固定的几种情况时使用，结构清晰，执行效率高
+
+-------------------------------------------------------
+3.循环结构
+while(){}
+
+------ 99乘法表 ---------
+echo '<table>';
+$a=1;
+while($a<9) {
+	$b=1;
+	if($a%2==0){
+		echo "<tr style='background:red;'>";
+	}else{
+		echo "<tr>";
+	}
+	while($b<=$a){
+		echo '<td>';
+		echo $a.'*'.$b.'='.$a*$b;
+		$b++;
+		echo '</td>';
+	}
+	$a++;
+	echo '</tr>';
+}
+echo '</table>';
+
+------------- 插入数据库 -----------
+$db=new mysqli('localhost','root','root','ruei');
+$i=1;
+while($i<=30){
+	$sql="insert into user(uname,age) value('ruei{$i}',$i)";
+	$db->query($sql);
+	$i++;
+}
+
+------------ 读取数据库 --------------
+$db=new mysqli('localhost','root','root','ruei');
+$sql="select * from user order by age desc";
+$result=$db->query($sql);
+while($row=$result->fetch_assoc()){
+	echo $row['uname'].'&nbsp;&nbsp;'.$row['age'].'<br/>';
+}
+
+=======================
+do{}while()-----最少执行一次
+//10以内的奇数
+$a=1;
+do{
+	echo $a;
+	$a+=2;
+}while($a<10);
+========================
+for(){}------当明确知道循环次数用
+//10以内的偶数
+$a=1;
+for($a;$a<=10;$a++){
+	if($a%2==0)
+		echo $a."\t";
+}
+
+4.break---语法结构：break int;---跳出几层循环（如果没那么多层，报错）
+5.continue---语法结构：continue int;---跳出几层循环到底部
+6.exit	die------一样的效果，以下的代码不执行
+
+	

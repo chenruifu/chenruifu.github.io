@@ -1,0 +1,88 @@
+PHP session 变量用于存储有关用户会话的信息，或更改用户会话的设置。Session 变量保存的信息是单一用户的，并且可供应用程序中的所有页面使用。
+
+php自动开启session，php.ini中：session.auto_start = 0 ；设置为1  开启
+
+在PHP.INI中,有两个跟缓冲区紧密相关的配置项
+1.output_buffering
+该配置直接影响的是php本身的缓冲区,有3种配置参数.on/off/xK(x为某个整型数值);
+on    - 开启缓冲区
+off    - 关闭缓冲区
+256k    - 开启缓冲区,而且当缓冲区的内容超过256k的时候,自动刷新缓冲区(把数据发送到apache);
+
+2.implicit_flush
+该配置直接影响apache的缓冲区,有2种配置参数. on/off
+on    - 自动刷新apache缓冲区,也就是,当php发送数据到apache的缓冲区的时候,不需要等待其他指令,直接就把输出返回到浏览器
+off    - 不自动刷新apache缓冲区,接受到数据后,等待刷新指令
+-----------------------
+setcookie(1名称，2值，3时间，4作用路径，5作用域，6是否https链接传输，7【是否js访问】);
+
+1--setcookie('web','chen');
+设置cookie web=>chen；改cookie在会话结束后销毁
+
+3--setcookie('web','chen',time()+60*5);
+设置cookie web=>chen；改cookie在5分钟后销毁，如果没加time()时间是重1970-0-0开始
+
+4--setcookie('web','charmfree',time()+60*5,'/');
+第四个参数设置，文件的作用路经，表示在这路径下的所有文件都可以使用此cookie
+会生成两个cookie
+
+5--setcookie('web','charmfree',time()+60*5,'/','.');
+第五个参数设置，文件的作用域，.表示  www.baidu.com;blog.baidu.com;都可以使用
+
+6--第六个参数，设置https加密才可以访问，如支付宝；默认false
+
+7--第七个参数，5.2以上版本才有；设置为true，客户端js脚本语言就不能访问；默认false
+----------------------------------
+ob_start — 打开输出控制缓冲      	ob_start()
+ob_clean — 清空（擦掉）输出缓冲区 	ob_clean()
+
+setcookie设置cookie前面不能有"输出"，否则会发警告，开启缓冲区，会先把输出的内容放到缓冲区，然后加载完后再输出
+------------------------------------------------
+$_COOKIE['web']---读取cookie
+
+setcookie('web','chen',time()+60*5);
+echo $_COOKIE['web'];
+第一次刷新时，会报错：没有此cookie；第二此刷新后正常输出有；因为第一此刷新时是在响应头位置，所有请求头信息中获取不到；第二次刷新，就请求得到cookie信息
+=======================================
+cookie优先级
+
+setcookie('web','ruei',time()+60*5);
+setcookie('web','chenruei',time()+60*5,'/');
+在当前页面输出的话是ruei，在上级页面输出是chenruei，取得是就近原则
+-----------------------------
+cookie只能存储字符串
+
+方法一：数组
+$arr=array('name','ruei');
+setcookie('web[0]',$arr[0],time()+60*5);
+setcookie('web[1]',$arr[1],time()+60*5);
+print_r($_COOKIE['web']);
+
+方法二：序列化对象
+$arr=array('name','ruei');
+setcookie('web',serialize($arr),time()+60*5);
+print_r(unserialize($_COOKIE['web']));
+---------------------------------------------
+判断客户端是否开启cookie功能
+
+//先判断是否写入cookie,因为第一次刷新获取不到cookie
+if(!isset($_GET['ckcookie'])){
+//如果为空，写入cookie并刷新
+	setcookie("cookieon","1");
+	$url = "http://localhost/c1.php?ckcookie=1";
+	header("location:".$url);
+}
+//获取cookie，如果存在就是客户端已开启cookie功能
+if(isset($_COOKIE['cookieon'])){
+	echo "进入具体页面.....";
+}else{
+	echo "对不起，本站需要COOKIE功能 ，请开启您浏览器的COOKIE功能！";
+}
+
+*******跳转页面********
+header("location:".$url);
+====================================
+cookie设置用户登录，客户端
+
+header设置cookie
+header("set-cookie:class=php");

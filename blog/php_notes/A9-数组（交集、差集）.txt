@@ -1,0 +1,152 @@
+一、数组的差集
+
+1.array_diff(array,array,[array...])
+返回在其他数组中不存在的键值(使用内部函数比较)
+
+2.array_udiff(array,array,[array...],Callback)
+用回调函数比较数据（自定义函数比较）
+
+3.array_diff_key((array,array,[array...]))
+返回在其他数组中不存在的键名
+
+4array_diff_ukey(array,array,[array...],Callback)
+用回调函数比较数据--比较键名
+
+5.array_diff_assoc((array,array,[array...]))
+返回在其他数组中不存在的键名和键值
+
+6.array_diff_uassoc(array,array,[array...],Callback)
+用回调函数比较数据--比较键名
+
+7.array_udiff_assoc()
+比较值用回调函数，比较索引用内部函数--比较键值；内部函数比较键名
+
+8.array_udiff_uassoc()
+用回调函数比较值和索引
+
+
+$arrKeys=array('name','age','job');
+$arrVal=array('ruei','18','PHP','html');
+print_r(array_diff($arrKeys,$arrVal));
+$arrKeys1=array('key1'=>'name','key2'=>'age','key3'=>'job');
+$arrVal1=array('key1'=>'ruei','val1'=>'18','val1'=>'PHP','val1'=>'html');
+print_r(array_diff_key($arrKeys1,$arrVal1));
+print_r(array_diff_assoc($arrKeys1,$arrVal1));
+
+结果：
+Array
+(
+    [0] => name
+    [1] => age
+    [2] => job
+)
+Array
+(
+    [key2] => age
+    [key3] => job
+)
+Array
+(
+    [key1] => name
+    [key2] => age
+    [key3] => job
+)
+-------------------------------
+function a($key1,$key2){
+    if($key1===$key2){
+    	return  0 ;
+    }elseif($key1>$key2){
+    	return  1 ;
+    }else{
+    	return - 1 ;
+    }     
+}
+echo '<pre>';
+$arr1=array('name'=>'ruei','age'=>'18','school'=>'abc');
+$arr2=array('name'=>'ruei','ages'=>'18','school'=>'abcd');
+print_r(array_diff_ukey($arr1,$arr2,'a'));
+print_r(array_diff_uassoc($arr1,$arr2,'a'));
+结果：
+Array
+(
+    [age] => 18
+)
+Array
+(
+    [age] => 18
+    [school] => abc
+----------------------------------
+========================================
+二、数组的交集
+
+1.array_intersect(arr1,arr2,[arr3...])
+计算数组的交集，返回arr1键值都存在的数组元素
+
+2.array_intersect_key(arr1,arr2,[arr3...])
+计算数组的交集，返回arr1键名都存在的数组元素
+
+3.array_intersect_assoc(arr1,arr2,[arr3...])
+计算数组的交集，返回arr1键名和键值都存在的数组元素
+
+4.array_intersect_ukey(arr1,arr2,[arr3...],Callback)
+通过回调函数，检查计算数组的交集，返回arr1键名都存在的数组元素
+
+5.array_intersect_uassoc(arr1,arr2,[arr3...],Callback)
+通过回调函数，检查计算数组的交集，返回arr1键名和键值都存在的数组元素
+
+6.array_uintersect(arr1,arr2,[arr3...],Callback)
+通过回调函数，比较键值
+
+7.array_uintersect_assoc(arr1,arr2,[arr3...],Callback)
+通过回调函数，比较键值；内部函数比较键名
+
+8.array_uintersect_uassoc(arr1,arr2,[arr3...],Callback，Callback)
+通过回调函数，分别比较键值和键名
+
+echo '<pre>';
+$arr1=array('name'=>'ruei','age'=>'18','school'=>'abc');
+$arr2=array('name'=>'ruei','ages'=>'18','school'=>'abcd');
+print_r(array_intersect($arr1,$arr2));
+print_r(array_intersect_key($arr1,$arr2));
+print_r(array_intersect_assoc($arr1,$arr2));
+结果：
+Array
+(
+    [name] => ruei
+    [age] => 18
+)
+Array
+(
+    [name] => ruei
+    [school] => abc
+)
+Array
+(
+    [name] => ruei
+)
+-------------------------------------
+function a($key1,$key2){
+    if($key1===$key2){
+    	return  0 ;
+    }elseif($key1>$key2){
+    	return  1 ;
+    }else{
+    	return - 1 ;
+    }     
+}
+echo '<pre>';
+$arr1=array('name'=>'ruei','age'=>'18','school'=>'abc');
+$arr2=array('name'=>'ruei','ages'=>'18','school'=>'abcd');
+print_r(array_intersect_ukey($arr1,$arr2,'a'));
+print_r(array_intersect_uassoc($arr1,$arr2,'a'));
+结果：
+Array
+(
+    [name] => ruei
+    [school] => abc
+)
+Array
+(
+    [name] => ruei
+)
+-------------------------------------------------

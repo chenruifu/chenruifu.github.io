@@ -1,0 +1,49 @@
+spl_autoload_register — 注册__autoload()函数 
+
+//自动载入类
+<?php 
+class auto{
+	static function run(){
+		spl_autoload_register(array('auto','autoload'));
+	}
+	static function autoload($classname){
+		require_once $classname.'Class.php';
+	}
+}
+auto::run();
+$aa=new app();
+$aa->a();
+?>
+
+<?php 
+class app{
+	function a(){
+		echo 111;
+	}
+}
+ ?>
+----------------------------------------------
+mysql存储session
+
+设置session处理机制，自定义
+ini_set("session.save_handler","user");
+
+设置用户自定义会话存储函数 
+session_set_save_handler("start","close","read","write","destroy","gc");
+
+1.建立数据库
+2.建立类，定义数据库信息
+3.初始化session配置
+4.开启，关闭，读取，写入，卸载，垃圾回收
+
+案例：121-sqlSession
+==============================
+session持久化处理
+
+ini_set
+session_set_cookie_params — 设置会话 cookie 参数 (只作用于当前脚本)
+session_set_cookie_params（生命周期，路径，作用域，安全链接https，不允许js调用）
+
+session_save_path — 读取/设置当前会话的保存路径 
+
+可参考：session传递方式

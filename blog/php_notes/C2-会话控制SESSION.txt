@@ -1,0 +1,150 @@
+PHP session 变量用于存储有关用户会话的信息，或更改用户会话的设置。Session 变量保存的信息是单一用户的，并且可供应用程序中的所有页面使用。
+
+session保存在服务器端
+
+php.ini配置
+自动开启session.auto_start = 0；设置为1，自动开启
+默认是以文件形式保存：session.save_handler = files
+默认的存储位置：session.save_path = "/tmp"
+默认session作用路径：session.cookie_path = /
+
+session_name — 读取/设置会话名称；也可以php.ini配置
+session_id — 获取/设置当前会话 ID 
+
+session_start — 启动新会话或者重用现有会话 
+如果没有session_id，会自动生成session_id
+=============================
+删除session   
+
+1.unset；文件还是存在，只是里面的内容删除了
+2.$_SESSION=array()；文件还是存在，只是里面的内容删除了
+3.session_destroy()；删除文件和内容；但数据还存在内存中；会删除session_id
+4.session_unset()；把session在内存中的数据删除，须在session_destroy()前面，在session_destroy()后面，找不到session_id，没办法删除内容；不会删除session_id
+
+//删除session
+session_start();	开启session
+$_SESSION['chen']='ruei';	写入session
+session_unset();	删除内存中session数据，不会删除session_id
+session_destroy();	删除session文件,删除session_id
+setcookie(session_name(),'',1,'/');删除cookie，因为session作用的路径是根目录'/'
+echo $_SESSION['chen'];	输出有错误，如果没有session_unset(),则输出ruei
+===================================
+session不同的传送方式
+
+地址栏传递  	$_GET，$_POST
+
+//c1.php
+<?php 
+session_start();
+$_SESSION['chen']='ruei';
+$session_id=session_id();
+?>
+<a href="c1_1.php?sid=<?php echo $session_id ?>">c1_1</a>
+
+//c1_1.php
+session_id($_GET['sid']);
+session_start();
+echo $_SESSION['chen'];
+通过地址栏传递，$_POST类似
+-----------------------------------------
+文件传递     	创建文件，传递
+
+//c1.php
+<?php 
+session_start();
+$_SESSION['chen']='ruei';
+$session_id=session_id();
+
+$sid=fopen('sid.txt', 'w');	//创建文件
+fwrite($sid, $session_id);	//写入session_id
+fclose($sid);		//关闭文件
+?>
+
+//c1_1.php
+$sid= file_get_contents("sid.txt");	//读取session_id内容
+session_id($sid);
+session_start();
+echo $_SESSION['chen'];
+--------------------------------------
+自动传递
+php.ini配置（允许通过session传递，设置为1只允许cookie传递）
+session.use_only_cookies = 0
+
+方式一：自动设置session_id
+//c1.php
+<?php 
+session_start();
+$_SESSION['chen']='ruei';
+$get=session_name().'='.session_id();
+?>
+<a href="c1_1.php?<?php echo $get ?>">c1_1.php</a>
+
+//c1_1.php
+<?php 
+session_start();	//当配置文件允许读取session传值，php会自动加载session_id
+echo $_SESSION['chen'];
+ ?>
+
+方式二：自动加入session_id地址传递，并设置session_id
+php.ini配置（自动使用session_id）
+session.use_trans_sid = 1
+自动使用session_id的链接
+url_rewriter.tags = "a=href,area=href,frame=src,input=src,form=fakeentry"
+
+//c1.php
+<?php
+session_start();
+$_SESSION['chen']='ruei';
+?>
+<a href="c1_1.php">c1_1.php</a>
+
+//c1_1.php
+<?php 
+session_start();
+echo $_SESSION['chen'];
+ ?>
+==============================
+php垃圾回收机制，session垃圾回收
+
+php.ini，存储的最大时间24分钟
+session.gc_maxlifetime = 1440
+
+当有1000个session，就有"可能"一个session删除，概率1/1000
+session.gc_probability = 1
+session.gc_divisor = 1000
+==============================
+改变session保存路径
+session_save_path — 读取/设置当前会话的保存路径
+服务器是共用的话，session存放的位置要分离，防止session串了
+
+可以建立多个文件夹保存session，可以提高session读取的效率
+==============================
+自定义session处理机制
+
+设置session处理机制，自定义
+ini_set("session.save_handler","user");
+
+设置用户自定义会话存储函数 
+session_set_save_handler("start","close","read","write","destroy","gc");
+session_set_save_handler("打开时","关闭时","读取时","写入","删除","清除内存");
+=====================================
+安全的session会话
+
+$_SERVER---服务器和执行环境信息
+session_regenerate_id — 使用新生成的会话 ID 更新现有会话 ID 
+
+思想：session存入客户端的环境信息，有非法用户获取session_id进行登入时，判断环境信息是否与session存入的客户端信息相同，不相同为非法用户创建新的session_id时，要先清楚session在内存中的信息session_unset；否则php的处理机制，还是会把session内存中的信息写入新的session_id
+
+$_SERVER['REMOTE_ADDR']---ip地址
+$_SERVER['HTTP_USER_AGENT']---客户端浏览器信息
+
+session_start();
+$_SESSION['chk']=$_SERVER['REMOTE_ADDR'].$_SERVER['HTTP_USER_AGENT'];
+if(isset($_SESSION['chk']) && $_SESSION['chk']!=$_SERVER['REMOTE_ADDR'].$_SERVER['HTTP_USER_AGENT'].'1111'){
+	session_unset();//清楚session在内存中的信息
+	session_regenerate_id();
+	echo "非法用户";
+}
+==================================
+
+

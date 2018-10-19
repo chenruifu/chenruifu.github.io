@@ -1,0 +1,199 @@
+1.类
+
+class AllNav{			//类名：首字母大写，后单词首字母大写
+	public $navName='chen';	//类属性：首单词小写，后单词大写
+	public $navMore;
+	function navForeach(){	//函数名：跟类属性一样
+		echo '函数名';
+	}
+}
+$abcd=new AllNav();
+echo $abcd->navName;	//chen
+$abcd->navForeach();	//函数名
+---------------------------------------------------------
+2.对象产生的步骤
+
+a.在内存中开辟出对象的空间
+b.执行构造方法
+c.将对象的引用地址返回
+----对象的释放：析构函数
+子类的构造函数中调用 parent::__construct() 
+子类的析构函数体中显式调用 parent::__destruct() 
+
+class AllNav{
+	public $navName='chen';
+	public $navMore;
+	function navForeach(){
+		echo '函数名';
+	}
+	function __construct(){	//构造函数，创建新对象时先调用此方法
+		$this->navName='ruei';
+	}
+	function AllNav(){	//旧的构造函数方法，方法名与类名相同PHP5.3.3以下
+		$this->navName='ruei';
+	}
+	
+	function __destruct(){	//析构函数，对象代码全部结束后执行
+		echo '函数结束';
+	}
+}
+$abcd=new AllNav();
+echo $abcd->navName;	//ruei
+echo '<br/>';
+结果：
+ruei
+函数结束
+-------------------------------------------------------------
+面对对象编程特性：抽象 封装 继承 多态
+
+抽象：把一类对的共同属性和方法抽象出来，形成类，这种思考方式就是抽象
+
+封装：把成员方法和成员属性封装到类中，隐藏属性和方法，隐藏方法实现的细节，通过public protected private finel static 限定类成员的访问权限，数据被保护在内部，只有通过授权的成员方法才可以操作。尽可能的对成员进行封装
+
+继承：可以使一个类继承并拥有另一个存在类的成员属性和方法，被继承的类称为父类或基类，继承类为子类。extends 关键字 实现继承关系
+
+多态：子类继承父类，通过对父类方法的重写实现多态
+
+public：		默认；公有。本类，子类，外部对象都可以执行
+protected：	受保护。本类，子类，可以执行；外部对象不可以执行
+private：		私有。只能在本类执行，子类外部对象都不可调用
+
+开放最小的权限给外部，让内部的成员，方法更安全更高效的执行
+
+class a{
+	public $Aa='chen';
+	private $Ab='ruei';
+	protected $Ac='fu';
+	public function Ad(){
+	}
+	private function Ae(){		
+	}
+	protected function Af(){		
+	}
+}
+======================================
+如果父类中的方法被声明为 final，则子类无法覆盖该方法
+如果一个类被声明为 final，则不能被继承
+
+属性不能被定义为 final，只有类和方法才能被定义为 final
+--------------------------------------------------
+常量：define()
+类常量 const  不能加$符
+调用：self::sss
+
+define('WEB', 'ruei');
+class all{
+	const WEBS='0.05';
+	function __construct(){
+		echo WEB;	//常量
+		echo '<br/>';
+		echo self::WEBS;	//类常量
+	}
+	final function nameAll(){
+		return '覆盖函数';
+	}
+}
+class red extends all{
+	// function nameAll(){	不能覆盖父类方法，报错
+	// 	return '覆盖';
+	// }
+}
+$abc=new red();
+echo $abc->nameAll();
+=======================================
+Static（静态）关键字
+
+由于静态方法不需要通过对象即可调用，所以伪变量$this 在静态方法中不可用
+静态属性不可以由对象通过 -> 操作符来访问（方法可以）
+
+class a{
+	public static $myName= 'foo';
+	function chen(){
+		$this->ruei();
+	}
+	static function ruei(){
+		//$this->fu();  报错
+		echo self::$myName;
+	}
+	function fu(){
+		echo 'che';
+	}
+}
+$abc = new a();
+$abc::ruei();//foo
+a::ruei();//foo
+$abc->chen();//foo
+$abc->ruei();//foo
+----------------------------------------------------
+静态方法重写是必须是静态方法
+静态方法调用a::ruei() 直接调用的是代码块的方法，省去创建对象，对象在查找方法两步骤，所以速度会比较快 
+--------------------------------
+$this 代表当前对象地址的引用
+class a{
+	public $myName=1;
+	function chen(){
+		return $this->myName;
+	}	
+}
+$abc = new a();
+echo $abc->chen();//1
+-----------------------------
+self 代表的是当前类
+class a{
+	public $myName=1;
+	function chen(){
+		return self::ruei();	//此结果：111
+		return $this->ruei();//此结果：222
+	}
+	function ruei(){
+		echo '111';
+	}
+}
+class b extends a{
+	function ruei(){
+		echo '222';
+	}
+}
+$abc = new b();
+echo $abc->chen();
+----------------------------------------
+parent 指向父类
+class a{
+	public $myName=1;
+	function chen(){
+		echo '111<br/>';
+		echo '222<br/>';
+	}
+}
+class b extends a{
+	function ruei(){
+		parent::chen();	//没加这行，只输出222
+		echo '222';
+	}
+}
+$abc = new b();
+echo $abc->ruei();
+================================
+构造函数：
+class b{
+	function ruei(){
+		echo '222<br/>';
+	}
+}
+class c{
+	private $cuss;
+	function __construct($type){
+		$this->cuss = new $type();//创建的这个对象，只在此类中使用
+		//$cus= new b();
+	}
+	function ruei(){
+		$this->cuss->ruei();
+		//$cus->ruei();
+	}
+}
+$cus = new c('b');
+$cus->ruei();	//输出222
+==
+==
+===
+

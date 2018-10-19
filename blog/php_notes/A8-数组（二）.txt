@@ -1,0 +1,219 @@
+array_fill(int,int,$val)
+通过指定索引顺序几个数生成数组
+
+echo '<pre>';
+$a  =  array_fill ( 5 ,  3 ,  'banana' );
+$b  =  array_fill (- 2 ,  4 ,  'pear' );
+print_r ( $a );
+print_r ( $b );
+结果：
+Array ( [5] => banana [6] => banana [7] => banana [8] => banana ) 
+Array ( [-2] => pear [0] => pear [1] => pear [2] => pear ) 
+----------------------------------------
+array_filter(arr，[callback])
+数组过滤函数，通过回调函数的方式返回新数组，如果回调函数返回true,数组元素返回到新数组中
+如果没有提供 callback 函数，将删除 input 中所有等值为 FALSE  的条目;
+
+function a($v){
+	if($v=='chen'){
+		return true;
+	}
+}
+$a=array('chen','ruei','fu');
+$b=array_filter($a,'a');
+$c=array_filter($a);
+print_r($b);
+print_r($c);
+结果：
+Array ( [0] => chen ) 
+Array ( [0] => chen [1] => ruei [2] => fu ) 
+----------------------------------
+array_flip(arr)
+把数组中的键名与键值进行交换
+
+$a=array('chen'=>'ruei','ruei'=>'chen','fu'=>'rueifu');
+print_r(array_flip($a));
+结果：
+Array ( [ruei] => chen [chen] => ruei [rueifu] => fu ) 
+----------------------------------------
+array_key_exists(key,arr)
+判断内容是否是数值的键名
+
+$a=array('name'=>'ruei','age'=>'18','fu'=>'rueifu');
+$b=array('ruei','18','rueifu');
+var_dump(array_key_exists('name',$a));	//bool(true) 
+var_dump(array_key_exists('2',$b));		//bool(true) 
+--------------------------------------------------
+array_keys(arr,[$search,bool])
+返回数组中的键名
+bool---严格比较类型
+
+$a=array('name'=>'ruei','age'=>'18','fu'=>'rueifu');
+print_r(array_keys($a));
+print_r(array_keys($a,'18',true));
+结果：
+Array([0] => name [1] => age [2] => fu)
+Array([0] => age)
+
+====================================
+====================================
+array_unique($arr)---移除数组中重复的值
+array_unshift($arr,$val[,$val...])---在数组开头插入一个或多个单元
+$arr[]='';----
+array_shift($arr)--删除数组第一个元素，如果删除失败返回null
+array_pop($arr)--删除数组最后一个元素
+array_keys($arr,[$search,bool])--得到数组的键名，以新数组返回
+array_values($arr)---得到数组的键值，以新数组返回
+
+
+============================
+============================
+1.each($arr)
+返回数组中的键名和键值生成数组，如果指针结束，返回布尔假
+
+2.list($a,$b)=$arr
+将索引数组的值赋给变量(不能用于关联数组)
+
+$arr=array('name'=>'小陈','age'=>'22');
+while(list($a,$b)=each($arr)){
+	echo $a.'=>'.$b.'<br/>';
+}
+结果：
+name=>小陈
+age=>22
+----------------------------------------
+3.array_map('callable',$arr,[$arr1])
+数组的每一个元素，都经过回调函数处理，返回值是处理过的元素组成的数组
+htmlspecialchars() 实体化标签
+
+$arr=array('<h1>chenrueifu</h1>','换行<br/>');
+function abc($a){
+	return htmlspecialchars($a);
+}
+print_r(array_map('abc',$arr));
+结果：
+Array
+(
+    [0] => <h1>chenrueifu</h1>
+    [1] => 换行<br/>
+)
+--------------------------------------
+4.array_walk($input,callable,[mixed传参])
+数组中的每一个元素，应用回调函数，只能一维数组
+
+function abc($a,$b,$c){
+	echo $a.$c.$b;
+}
+$arr=array('name'=>'小陈','age'=>'22');
+array_walk($arr,'abc','键名');
+结果：
+小陈 键名 name   22 键名 age
+------------------------------------------
+5.array_walk_recursive($input,callable,[mixed传参])
+递归操作数组，多维数组
+
+function abc($a,$b,$c){
+	echo $b.$c.$a.'<br/>';
+}
+$arr=array('name'=>'小陈','age'=>'22',array('name'=>'小陈','age'=>'22'));
+array_walk_recursive($arr,'abc','===');
+结果：
+name===小陈
+age===22
+name===小陈
+age===22
+
+
+============================
+============================
+1.array compact(mixed[,mixed])
+将多个变量转化为数组，变量名为数值的键名，变量值为键值
+任何没有变量名与之对应的字符串都被略过
+返回一个新数组
+
+$name='ruei';
+$age='18';
+$jop='html';
+$arr=compact('name','age','jop');
+print_r($arr);
+
+结果：Array ( [name] => ruei [age] => 18 [jop] => html ) 
+==================
+2.int extract  ( array &$var_array  [, int $extract_type  = EXTR_OVERWRITE  [, string $prefix  = NULL    ]] )
+针对关联数组，将数组转化为变量，键名为变量名，键值为变量值；数字索引的数组将不会产生结果，除非用了EXTR_PREFIX_ALL或者EXTR_PREFIX_INVALID 
+返回转化成功的个数
+EXTR_OVERWRITE---如果有冲突，覆盖已有的变量(默认)
+EXTR_SKIP --- 如果有冲突，不覆盖已有的变量
+EXTR_PREFIX_SAME --- 如果有冲突，在变量名前加上前缀 prefix
+EXTR_PREFIX_ALL --- 给所有变量名加上前缀 prefix
+EXTR_PREFIX_INVALID --- 仅在非法／数字的变量名前加上前缀 prefix
+EXTR_IF_EXISTS --- 仅在当前符号表中已有同名变量时，覆盖它们的值。其它的都不处理
+EXTR_PREFIX_IF_EXISTS---仅在当前符号表中已有同名变量时，建立附加了前缀的变量名，其它的都不处理
+EXTR_REFS --- 将变量作为引用提取
+
+$arr=array('name','ruei','fu');
+$arr=extract($arr,EXTR_PREFIX_ALL,'crf');
+echo $crf_0;		//name
+
+3.bool in_array  ( mixed  $needle  , array $haystack  [, bool $strict  = FALSE  ] )
+检测内容是否在数组中
+$strict默认false,设置为true还会检查类型是否相同
+
+$arr=array('chen','ruei','fu',1,2);
+var_dump(in_array('1',$arr));		//bool(true) 
+var_dump(in_array('chen',$arr));	//bool(true) 
+var_dump(in_array('1',$arr,true));	//bool(false)
+
+
+
+===============================
+===============================
+1.array_merge(array[,array])---合并一个或多个数组 
+如果输入的数组中有相同的字符串键名，则该键名后面的值将覆盖前一个值。然而，如果数组包含数字键名，后面的值将不会覆盖原来的值，而是附加到后面。 
+如果只给了一个数组并且该数组是数字索引的，则键名会以连续方式重新索引
+
+2.array_merge_recursive(array[,array])---合并一个或多个数组 
+如果输入的数组中有相同的字符串键名，则这些值会被合并到一个数组中去,这将递归下去
+
+
+$arr=array('webname'=>'陈','weburl'=>'ruei.com');
+$arr1=array('webname'=>'陈瑞','weburl1'=>'ruei.com');
+echo '<pre>';
+print_r(array_merge($arr,$arr1));
+结果：
+Array
+(
+    [webname] => 陈瑞
+    [weburl] => ruei.com
+    [weburl1] => ruei.com
+)
+Array
+(
+    [webname] => Array
+        (
+            [0] => 陈
+            [1] => 陈瑞
+        )
+
+    [weburl] => ruei.com
+    [weburl1] => ruei.com
+)
+------------------------------------------------
+3.array_change_key_case (array[, int $case  = CASE_LOWER ])
+将数组中的所有键名改为全小写或大写
+CASE_LOWER---小写
+CASE_UPPER ---大写
+
+$arr=array('webname'=>'陈','weburl'=>'ruei.com');
+echo '<pre>';
+print_r(array_change_key_case($arr,CASE_UPPER));
+结果：
+Array
+(
+    [WEBNAME] => 陈
+    [WEBURL] => ruei.com
+)
+
+
+
+

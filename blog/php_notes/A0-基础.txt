@@ -1,0 +1,107 @@
+PHP 是一种创建动态交互性站点的强有力的服务器端脚本语言
+
+1.什么是PHP
+PHP 是 "PHP Hypertext Preprocessor" 的首字母缩略词
+PHP 是一种被广泛使用的开源脚本语言
+PHP 脚本在服务器上执行
+PHP 没有成本，可供免费下载和使用
+
+2.能做什么
+PHP 能够生成动态页面内容
+PHP 能够创建、打开、读取、写入、删除以及关闭服务器上的文件
+PHP 能够接收表单数据
+PHP 能够发送并取回 cookies
+PHP 能够添加、删除、修改数据库中的数据
+PHP 能够限制用户访问网站中的某些页面
+PHP 能够对数据进行加密
+
+3.为什么使用PHP
+PHP 运行于各种平台（Windows, Linux, Unix, Mac OS X 等等）
+PHP 兼容几乎所有服务器（Apache, IIS 等等）
+PHP 支持多种数据库
+PHP 是免费的。请从官方 PHP 资源下载：www.php.net
+PHP 易于学习，并可高效地运行在服务器端
+
+4.PHP标记风格
+<?php    ?>
+<script language='php'>...</script>	不常用
+<?          ?>	得在 php.ini 配置文件修改
+<%        %>	得在 php.ini 配置文件修改
+
+5.PHP注释
+单行注释		//
+多行注释		/*    */
+
+6.PHP变量规则
+变量以 $ 符号开头，其后是变量的名称
+变量名称必须以字母或下划线开头
+变量名称不能以数字开头
+变量名称只能包含字母数字字符和下划线（A-z、0-9 以及 _）
+变量名称对大小写敏感（$y 与 $Y 是两个不同的变量）
+支持中文命名（$陈）
+
+--------可变变量
+$a='chen';
+$$a='ruei';
+echo $chen;	结果:ruei
+echo $$a;	结果:ruei
+
+--------超全局变量
+$_GET[]---用于收集提交 method="get"的表单数据或URL 中的发送的数据
+<a href="a.php?subject=PHP&web=W3school.com.cn">$GET</a>
+$_POST[]---用于收集提交 method="post" 的表单数据
+<form method="post" action="">
+<input type="text" name="fname">
+<input type="submit">
+</form>
+$_REQUEST[]--用于收集 HTML 表单提交的数据($_GET和$_POST整合,效率低)
+
+--------引用变量
+$a='chen';
+$b=$a;		//传值赋值
+$c=&$a;		//传址赋值
+echo $c,'<br/>';	//chen
+$a='ruei';
+echo $a,'<br/>';	//ruei
+echo $c,'<br/>';	//ruei
+echo $b;		//chen
+
+--------常量==define()
+1.首个参数定义常量的名称
+2.第二个参数定义常量的值
+3.可选的第三个参数规定常量名是否对大小写敏感。默认是 false。
+4.规则命名建议大写（区分常量，变量）
+
+define('chen','ruei',true);
+echo CHEN;	//ruei
+
+5.默认的系统常量
+M_PI;		π
+PHP_VERSION;	返回PHP版本
+PHP_OS;		返回服务器系统
+
+--------魔术常量（不同状态下返回不同的值）双下划线
+1.__LINE__	返回所在代码行数（在第几行返回几）
+2.__FILE__	返回路径
+3.__FUNCTION__	返回方法（function）名
+4.__CLASS__	返回类（class）名
+5.__METHOD__	返回类（class）名和方法（function）名【class : : function】
+
+---------------------------------
+基本的输出方法：
+echo - 能够输出一个以上的字符串
+print - 只能输出一个字符串，并始终返回 1
+
+isset	检测变量是否定义
+defined	检测常量是否定义
+var_dump()	返回变量或常量的类型和值
+-------
+$chen='ruei';
+define('chen','chenruei');
+echo isset($chen),'<br/>';		1
+echo defined('chen'),'<br/>';		1
+echo var_dump(chen);		string(8) "chenruei" 
+
+	
+
+

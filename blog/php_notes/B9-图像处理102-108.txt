@@ -1,0 +1,73 @@
+imageistruecolor — 检查图像是否为真彩色图像 
+
+$gif=imagecreatefromgif('gif.gif');
+var_dump(imageistruecolor($gif));
+结果：false
+--------------------------------------------
+imagetruecolortopalette — 将真彩色图像转换为调色板图像
+imagetruecolortopalette(图像资源，点之间是否抖动、设置为true图像更自然，索引色位数);
+
+//将图片转换为64色的索引色图片
+$img=imagecreatefromjpeg('photo.jpg');
+imagetruecolortopalette($img,true, 64);
+header("content-type:image/gif");
+imagegif($img);
+---------------------------------------
+imagecolorat — 取得某像素的颜色索引值
+imagecolorat(image, x, y)
+真彩色的图片，可以获取索引值，需用函数imagecolorsforindex，转换为rbg值
+-------------------------------------
+imagecolorsforindex — 取得某索引的颜色 
+imagecolorsforindex(image, index)
+返回一个数组   R值 G值 B值 A值（透明度）
+---------------------------------------
+imagecolorset — 给指定调色板索引设定颜色
+imagecolorset(image, index, red, green, blue)
+===============================
+imagecolortransparent — 将某个颜色定义为透明色；返回透明色的索引值 
+int imagecolortransparent  ($img  [， $color  ] )
+将$img图像中的透明色设定为 color
+
+$img=imagecreatefrompng('logo.png');
+$color=imagecolorallocate($img, 0, 0, 0);
+$index=imagecolortransparent($img,$color);
+header("content-type:image/png");
+imagepng($img);
+------------------------------------------------------
+案例：
+
+//获取图片信息
+$info = getimagesize('jpg.jpg');
+//创建图片资源
+$jpg = imagecreatefromjpeg("jpg.jpg");
+//将图片转化为5个调色板的图片
+imagetruecolortopalette($jpg, true, 5);
+//将调色板为3的颜色，设为透明
+imagecolortransparent($jpg,3);
+//创建真彩色图片，比原图片大20像素
+$img= imagecreatetruecolor($info[0]+20, $info[1]+20);
+//填充背景色
+imagefill($img, 0, 0, imagecolorallocate($img,121,124,0));
+//将$jpg复制到真彩色
+imagecopy($img, $jpg, 10, 10, 0, 0, $info[0], $info[1]);
+header("content-type:image/gif");
+imagegif($img);
+---------------------------------------------------------------
+案例：背景透明放大20PX
+
+//获取图像信息
+$info = getimagesize('logo.gif');
+//创建图像资源
+$gif = imagecreatefromgif("logo.gif");
+//获取透明色的索引值
+$index= imagecolortransparent($gif);
+//获取透明色的rgba值数组
+$index_color=imagecolorsforindex($gif, $index);
+
+$img=imagecreate($info[0]+20, $info[1]+20);
+//创建背景色，返回背景色的索引
+$bg=imagecolorallocate($img, $index_color['red'], $index_color['green'], $index_color['blue'])；
+//复制图片到图像资源上
+imagecopy($img, $gif, 10, 10, 0, 0, $info[0], $info[1]);
+//将背景色设置为透明
+imagecolortransparent($img,$bg);

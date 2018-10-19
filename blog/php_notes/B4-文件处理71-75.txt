@@ -1,0 +1,103 @@
+bool is_executable  ( string $filename  )--判断给定文件名是否可执行
+
+bool is_file  ( string $filename  )---判断给定文件名是否为一个正常的文件
+
+bool is_dir  ( string $filename  )---判断给定文件名是否是一个目录 
+
+bool file_exists  ( string $filename  )---检查文件或目录是否存在
+
+bool is_readable  ( string $filename  )---判断给定文件名是否可读
+
+bool is_writable( string $filename)--判断给定的文件名是否可写；别名：is_writeable
+
+fopen — 打开文件或者 URL
+fread — 读取文件（可安全用于二进制文件）
+fwrite — 写入文件（可安全用于二进制文件）
+rewind — 倒回文件指针的位置
+fclose — 关闭一个已打开的文件指针
+
+**********打开文件的方式fopen
+'r'
+只读方式打开，将文件指针指向文件头。  
+'r+'
+读写方式打开，将文件指针指向文件头。  
+'w'
+写入方式打开，将文件指针指向文件头并将文件大小截为零。如果文件不存在则尝试创建之。  
+'w+'
+读写方式打开，将文件指针指向文件头并将文件大小截为零。如果文件不存在则尝试创建之。  
+'a'
+写入方式打开，将文件指针指向文件末尾。如果文件不存在则尝试创建之。  
+'a+'
+读写方式打开，将文件指针指向文件末尾。如果文件不存在则尝试创建之。  
+'x'
+创建并以写入方式打开，将文件指针指向文件头。如果文件已存在，则 fopen()  调用失败并返回 FALSE ，并生成一条 E_WARNING  级别的错误信息。如果文件不存在则尝试创建之。这和给 底层的 open(2) 系统调用指定 O_EXCL|O_CREAT 标记是等价的。  
+'x+'
+创建并以读写方式打开，其他的行为和 'x' 一样 
+
+为移植性考虑，强烈建议在用 fopen()  打开文件时总是使用 'b' 标记
+fopen('a.txt','rb')
+
+******打开url*******
+php.ini配置（默认开启）：allow_url_fopen = On
+
+fgets — 从文件指针中读取一行
+
+$a=fopen('http://www.baidu.com', 'rb');
+while($row=fgets($a)){
+	echo $row;
+}
+----------------------------------------------
+读取二进制标记---图片
+
+$a=fopen('logo.png','rb');
+header("Content-type:images\png");
+echo fread($a,filesize('logo.png'));
+-----------------------------------------------
+===========================
+string fgetc  ( resource $handle  )---从文件句柄中获取一个字符
+
+string fgets  ( resource $handle  [, int $length  ] )---从文件指针中读取一行
+$length默认为1024字节，1K;
+
+string fgetss  ( resource $handle  [, int $length  [, string $allowable_tags  ]] )
+从文件指针中读取一行并过滤掉 HTML 标记
+
+//ruei福 <h2>hsk</h2><span></span>
+$a=fopen('ruei.txt','r');
+echo fgetc($a);	//r
+echo fgetc($a);	//u
+echo fgets($a);	//ruei福 <h2>hsk</h2><span></span>;html会解析
+echo fgetss($a,filesize('ruei.txt'),'<h2>');
+//ruei福 <h2>hsk</h2>;span会抹去
+-------------------------------------------------
+file_get_contents — 将整个文件读入一个字符串
+file_put_contents — 将一个字符串写入文件 
+
+//ruei福 <h2>hsk</h2><span></span>
+$a=file_get_contents('ruei.txt');
+file_put_contents('chen.txt', $a);
+
+读取ruei.txt文件的内容，创建chen.txt，把ruei.txt的内容写进去；
+如果chen.txt存在，会抹去里面的所有内容，再写入
+如果不存在，新创建在写入；跟fopen() w w+ a a+ x一样的效果
+========================================
+字符串无乱码截取
+
+int ord  ( string $string  )---返回字符的 ASCII 码值
+
+编码格式不同，汉字字节长度不同
+substr（）截取字符串
+=================================
+案例：文件读取，分页类    filePageClass.php
+
+float ceil  ( float $value  )---进一法取整
+ceil(14.56); ----15
+-------------------------------------------
+mixed  parse_url  ( string $url  [, int $component  = -1  ] )
+解析 URL，返回其组成部分(关联数组)
+----------------------------------------
+$_SERVER  是一个包含了诸如头信息(header)、路径(path)、以及脚本位置(script locations)等等信息的数组
+----------------------------------------
+parse_url() — 解析 URL，返回其组成部分 
+---------------------------------
+parse_str() — 将字符串解析成多个变量

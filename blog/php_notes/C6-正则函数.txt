@@ -1,0 +1,96 @@
+preg_match — 执行一个正则表达式匹配
+在第一次匹配后，将会停止搜索
+preg_match(正则表达式，字符串，匹配数组，显示匹配的偏移量，指定开始检索的位置)如果正则表达式有原子组（()）,则匹配的数组$matches[0] 将包含完整模式匹配到的文本， $matches[1]  将包含第一个捕获子组匹配到的文本，以此类推。
+
+$str='aabbcc';
+preg_match('/a/',$str,$arr,PREG_OFFSET_CAPTURE,1);
+print_r($arr);
+输出：Array ( [0] => Array ( [0] => a [1] => 1 ) ) 
+匹配到a,位置1
+------------------------------
+preg_match_all — 执行一个全局正则表达式匹配
+全局匹配
+方法同上，只是数组的显示有差别
+PREG_PATTERN_ORDER：（默认）完整模式，原子组分开
+PREG_SET_ORDER ：分开模式，完整+原子组
+PREG_OFFSET_CAPTURE ：显示偏移量（按完整模式匹配）
+
+======================================
+preg_grep — 返回匹配模式的数组条目（保留索引值）
+array preg_grep  ( string $pattern  , array $input  [, int $flags  = 0  ] )
+$pattern：正则表达式
+$input：要匹配的数组
+$flags：如果设置PREG_GREP_INVERT，输出匹配不成功的数组条目
+
+$arr=array('a'=>'chen','b'=>'hen','c'=>'enen','d'=>'ruei');
+$narr=preg_grep('/.*n$/is', $arr,PREG_GREP_INVERT);
+echo '<pre>';
+print_r($narr);	//Array( [d] => ruei )
+------------------------------------
+preg_split — 通过一个正则表达式分隔字符串 
+array preg_split  ( string $pattern  , string $subject  [, int $limit  = -1  [, int $flags  = 0  ]] )
+$pattern：正则表达式
+$subject：要匹配的字符串
+$limit：匹配最多个数，-1或0则全部匹配
+$flags：匹配模式：
+	PREG_SPLIT_NO_EMPTY：忽略空白
+	PREG_SPLIT_DELIM_CAPTURE ：原子组将被捕获
+	PREG_SPLIT_OFFSET_CAPTURE ：附加偏移量
+
+$str='chen ruei  fu';
+$narr=preg_split('/(\s)/', $str,0,PREG_SPLIT_NO_EMPTY);
+echo '<pre>';
+print_r($narr);
+结果:Array ( [0] => chen [1] => ruei [2] => fu ) 
+===================================
+preg_replace — 执行一个正则表达式的搜索和替换
+mixed  preg_replace  ( mixed  $pattern  , mixed  $replacement  , mixed  $subject  [, int $limit  = -1  [, int &$count  ]] )
+
+$pattern：正则表达式，可以是数组
+$replacement：字符串或数组，如果是数组跟前者一一对应
+$subject：进行搜索和替换的字符串或字符串数组
+$limit：进行替换的最大次数，-1无限
+$count：统计替换的个数
+
+$str='chenrueifu';
+$newstr=preg_replace('/ruei/',"<b>\${0}</b>",$str);
+echo $newstr;
+//把ruei加粗
+
+$str='chenrueifu';
+$pergarr=array('/chen/','/fu/');
+$replarr=array("<b>\${0}</b>","<i>\${0}</i>");
+$newstr=preg_replace($pergarr,$replarr,$str);
+echo $newstr;
+//分别把chen加粗，fu斜体
+--------------------------------
+preg_replace_callback — 执行一个正则表达式搜索并且使用一个回调进行替换
+方法同上！只是第二个参数是一个回调函数
+
+string handler  ( array $matches  )----回调函数
+
+$str='chenrueifu';
+$pergarr=array('/chen/','/fu/');
+function abc($age){
+	if(strstr($age[0],'c')){
+		return "<b>$age[0]</b>";
+	}
+	return "<i>$age[0]</i>";
+}
+$newstr=preg_replace_callback($pergarr,"abc",$str);
+echo $newstr;
+//效果同上：分别把chen加粗，fu斜体，strstr()判断是不是第一个匹配的
+匹配第一个正则返回：return "<b>$age[0]</b>";
+匹配第二个正则返回：return "<i>$age[0]</i>";
+----------------------------------------------
+preg_filter — 执行一个正则表达式搜索和替换 
+跟 preg_replace() 区别仅仅返回(可能经过转化)与目标匹配的结果
+
+$arr=array('chen','ruei','fu');
+$newArr=preg_replace('/(.*)?c(.*)?/U',"yes",$arr);
+$newArr1=preg_filter('/(.*)?c(.*)?/U',"yes",$arr);
+print_r($newArr);	//Array ( [0] => yeshen [1] => ruei [2] => fu )
+print_r($newArr1);	//Array ( [0] => yeshen )
+
+
+

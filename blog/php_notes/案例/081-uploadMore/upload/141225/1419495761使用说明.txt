@@ -1,0 +1,139 @@
+﻿phpStudy 2014.6.10
+『软件简介』
+    该程序包集成最新的Apache+Nginx+LightTPD+PHP+MySQL+phpMyAdmin+Zend Optimizer+Zend Loader，一次性安装，无须配置即可使用，是非常方便、好用的PHP调试环境。该程序绿色小巧简易迷你仅有35M，有专门的控制面板。总之学习PHP只需一个包。
+　　对学习PHP的新手来说，WINDOWS下环境配置是一件很困难的事；对老手来说也是一件烦琐的事。因此无论你是新手还是老手，该程序包都是一个不错的选择。
+1、全面适合 Win2000/XP/2003/win7/win8/win2008 操作系统 ,支持Apache、IIS、Nginx和LightTPD。
+2、该程序包集成以下软件，括号内为phpstudy下对应的目录。
+   php 5.6b4   (php56n)
+   php 5.5.13   (php55)
+   php 5.5.13-nts   (php55n)
+   php 5.4.29   (php54)
+   php 5.4.29-nts   (php54n)
+   php 5.3.28   (php53)
+   php 5.3.28-nts   (php53n)
+   php 5.2.17   (php52)
+   Apache 2.4.9   (Apache)
+   Nginx 1.6.0   (nginx)
+   LightTPD 1.4.35   (Lighttpd)
+   MySQL 5.5.38   (MySQL)
+   MySQL-Front 5.3   (SQL-Front)
+   phpMyAdmin 3.5.8.2   (phpMyAdmin)
+   pear 1.9.4   (pear)
+   OpenSSL 1.0.1e&0.9.8y
+   ZendOptimizer 3.3.3   (php5.2有)
+   Zend Loader 5.5.0   (php5.3有)
+   Zend Loader 6.0.0   (php5.4有)
+   wincache 1.3.5   (fastcgi有)
+   php_opcache 7.0.3  (ZendOpcache扩展)
+   xdebug 2.2.5
+   xcache  3.1.0
+   eAccelerator 1.0&0.9.6
+   php_sqlsrv   (MSSQL扩展) 
+   php_pdo_sqlsrv   (PDO-MSSQL扩展)
+   php_mongo 1.4.5   (MongoDB扩展) 
+   php_dbase 5.1.0   (dbase扩展) 
+   php_dbx 1.1.2   (dbx扩展) 
+   php_apc 3.1.13  (php_apc扩展)
+   php_memcache 3.0.8
+   SendMail 3.2   (sendmail)
+
+
+3、MySQL数据库默认用户名：root，密码root，安装后请重新设置密码。
+
+4、本程序纯绿色，支持22种组合一键切换，支持系统服务和非服务两种启动方式，自由切换。改变安装路径或拷贝到别的电脑上也可正常运行；即便是运行完再更改路径也能运行，真正做到无须配置。重写控制面板更加有效直观地进行控制程序的启停。
+
+5、自带FTP服务器，支持多用户，无需再安装FTP服务器。自带网站挂马监视器，随时记录文件的修改情况，让挂马文件无处可逃。
+
+6、本程序完美支持II7,IIS8和IIS6。应网友的要求制作Nginx版和Lighttpd版。Nginx版为phpfind，Lighttpd版为phpLight。
+
+推荐：学习JSP用JspStudy。
+『软件简介』
+JspStudy集成JDK+tomcat+Apache+mysql，JSP环境配置一键启动。无需修改任何配置即可迅速搭建支持JSP的服务器运行环境。
+纯绿色解压即可，支持系统服务和非服务两种启动方式，自由切换。控制面板更加有效直观地进行控制程序的启停。
+JspStudy将复杂的JSP环境配置简单化。
+
+
+『特别注意』
+1. 为了减少出错安装路径不得有汉字，如有防火墙开启，会提示是否信任httpd、mysqld运行，请选择全部允许。
+2. 此为apache+php方案，需要Nginx+php方案的请到www.phpStudy.net下载phpfind，Lighttpd+PHP方案下载phpLight。
+3. 重装系统后或相关服务丢失时，只需要点一下『运行模式-应用』即可。
+4. 可通过菜单『卸载相关服务』进行卸载相关服务。
+5. 在『启动』、『停止』、『重启』三个启停按钮上右键可以有选择地进行启停，左键将控制全部的启停。
+6. 菜单『phpStudy 设置』可以进行php,apche,mysql的相关设置。菜单『站点域名设置』可以进行站点及域名的添加。
+7. 本程序分为安装版和非安装版，无论是安装还是免安装，最后的效果完全一致。
+8. 端口问题无法启动时，请使用菜单『强制启动端口』进行端口检测，尝试启动。
+
+系统服务和非服务启动的区别：
+系统服务启动：开机就会启动，适合经常使用或做服务器，无需手工启动，服务会随开机而启动，好处程序运行稳定。
+非服务启动：需要手动启动一下，适合偶尔经常使用一下。在不使用的情况不会启动相关进程，从而节省电脑的资源。
+
+『特别声明』该程序没有任何商业目的，之所以取名为phpStudy，仅作学习之用，不得用于商业用途；该程序所包括的软件版权归原作者所有。对于使用此程序给您造成的任何损失，本人概不负责！
+
+MySQL数据库默认用户名：root，密码root (为什么很多人看不到呢!!!)
+
+====phpStudy提示没安装Zend或Zend Optimizer not Installed======
+phpStudy是自带Zend Optimizer和Zend Guard Loader，
+但是php5.3及以后的版本Zend Optimizer改名Zend Guard Loader。 
+php5.3及以后的版本Zend Optimizer改名Zend Guard Loader。 
+是zend官方改名不是我改的哟。 
+也就是说需要Zend Optimizer的程序将不能安装到php5.3以后的版本。 
+所以下载phpStudy之后切换到php5.2即可解决问题。 
+需要Zend Guard Loader的切换到php5.3和php5.4，但是必须是以fastcgi模式运行
+参照：http://www.phpstudy.net/a.php/181.html
+
+
+====IIS7/8快速安装PHP及phpStudy注意事项=======
+phpStudy支持win7/8和win2008/2012的IIS7/8。win8最好以管理员身份运行。已经测试过N次了。
+但是在安装前要注意激活FastCGI 模块
+默认安装的 IIS 中 FastCGI 模块被关闭。要激活其的步骤在不同版本的 Windows 下不同。
+
+要在 Windows Vista SP1 和 Windows 7 中激活 FastCGI 支持：
+在 Windows 开始菜单中选择“运行...”（或在搜索框内），输入“optionalfeatures.exe”并按“确定”（或敲回车键）；
+在“Windows 功能”对话框中展开“Internet 信息服务”，“万维网服务”，“应用程序开发功能”，并选中“CGI”的选择框；
+点击确定按钮并等待安装完成。
+
+要在 Windows Server 2008 和 Windows Server 2008 R2 中激活 FastCGI 支持：
+在 Windows 开始菜单中选择 "运行:"，输入 "CompMgmtLauncher" 并点击 "确定"；
+或 打开服务器管理器－添加角色－Web 服务器（IIS），再勾选CGI后安装
+
+激活FastCGI 模块后切换到phpstudy的IIS7+php5.2-5.5即可
+
+参照：http://www.phpstudy.net/a.php/182.html
+
+====不能启动的问题==========
+
+有个别同学说不能在win7下使用，此程序已经在Win2000/xp/2003/win7/win8/win2008下测试成功，操作系统均专业版。apache启动不了，原因一是防火墙拦截，二是80端口已经被别的程序占用，如IIS，迅雷等；三是没有安装VC9运行库,php和apache都是VC9编译。解决以上三个问题，99%能一次性安装成功，如何不能成功，那1%的可能就是人品问题，就不要联系我了。
+
+不是管理员administrator的用户，请右键以管理员身份运行。win8最好以管理员身份运行。牵扯到服务进程的管理必须以管理员身份运行。
+端口问题无法启动时，请使用菜单『环境端口检测』进行端口检测，尝试启动。最重要的一点，你的机子一定要安装VC9运行库,phpStudy安装路径不得有汉字。
+
+32位的VC9运行库下载：http://www.microsoft.com/zh-CN/download/details.aspx?id=5582
+64位的VC9运行库下载：http://www.microsoft.com/zh-CN/download/details.aspx?id=15336
+VC11运行库下载：http://www.microsoft.com/zh-CN/download/details.aspx?id=30679
+
+不能启动 参照：http://www.phpstudy.net/a.php/184.html
+
+
+                                                       scp1688@163.com
+                                               		QQ:282129207
+                                            http://www.phpStudy.net
+
+
+=====有问题的请仔细阅读下面内容。=================
+
+1. 如何调试打开PHP  参照：http://www.phpstudy.net/a.php/183.html
+2. 无法正常启动时   参照：http://www.phpstudy.net/a.php/184.html
+3. 如何修改端口及WWW目录     参照：http://www.phpstudy.net/a.php/185.html
+4. 修改或重置MySQL密码   参照：http://www.phpstudy.net/a.php/186.html
+5. 快速建立MySQL数据库   参照：http://www.phpstudy.net/a.php/187.html
+6. 如何添加多站点        参照：http://www.phpstudy.net/a.php/188.html
+7. 如何控制单一启停      参照：http://www.phpstudy.net/a.php/189.html
+8. 重装系统后启动        参照：http://www.phpstudy.net/a.php/190.html
+9. 如何更新升级          参照：http://www.phpstudy.net/a.php/191.html
+10. 提示没安装Zend或Zend Optimizer not Installed  参照：http://www.phpstudy.net/a.php/181.html
+11. IIS7/8快速安装PHP及注意事项   参照：http://www.phpstudy.net/a.php/182.html
+12. 如何禁止或允许站点目录列表    参照：http://www.phpstudy.net/a.php/192.html
+13. 自带Ftp Server如何使用        参照：http://www.phpstudy.net/a.php/193.html
+14. 自带挂马监视器如何使用        参照：http://www.phpstudy.net/a.php/194.html
+
+

@@ -1,0 +1,99 @@
+array file  ( string $filename  [, int $flags  = 0  [, resource $context  ]] )
+把整个文件读入一个数组中（一行一个）
+如果文件时一个压缩文件的哈，只有一行，数组的个数也只有一个！
+set_include_path — 设置 include_path 配置选项
+
+set_include_path('a');
+print_r(file('ruei.txt',1));
+
+如果file设置第二个参数1，查找的顺序：
+1.set_include_path('a');  a目录下的
+2.本脚本目录下
+3.查找php.ini；include_path目录下查找
+-----------------------------------------------------------
+copy('chen.txt', 'b\\ruei.txt');
+把本目录下的chen.txt,复制到b目录下，并改名为ruei.txt
+第二个参数不能只传路径，须带有文件名
+
+rename('d/c', 'd/d');
+重命名d->c，改为d->d；也可以重命名文件名
+
+rename('d/e', './e');；
+把d文件夹下面的e；剪切到当前当前脚本的目录
+
+rename('d/chen.txt', 'e/chen1.txt');
+把d文件夹厦门的chen.txt；剪切到e文件夹下面，并改名为chen1.txt
+==================================
+date_default_timezone_set()  设定的时区 (PRC)
+filectime — 取得文件的 inode 修改时间(创建时间)
+filemtime — 取得文件修改时间 
+*****默认会有缓存！！！ clearstatcache — 清除文件状态缓存
+fileatime — 取得文件的上次访问时间 （默认是关闭的,关闭是1，开始是0）
+cmd查看：fsutil behavior query disablelastaccess
+cmd设置：fsutil behavior set disablelastaccess 0
+
+touch — 设定文件的访问和修改时间 
+
+date_default_timezone_set('PRC');
+echo date('Y-m-j H:i',filectime('ruei.txt'));//创建时间
+echo date('Y-m-j H:i',filemtime('ruei.txt'));//修改时间
+======================================
+rewind（$handle ） — 倒回文件指针的位置
+ftell（$handle ） — 返回文件指针读/写的位置
+feof（$handle ） — 测试文件指针是否到了文件结束的位置
+fpassthru（$handle ） — 输出文件指针处的所有剩余数据 
+
+fseek（$handle，$offset ，$whence ） — 在文件指针中定位 
+例子：fseek($a, -2,SEEK_END );
+$offset：偏移量
+$whence：
+1. SEEK_SET  - 设定位置等于 offset 字节（从0开始）
+2. SEEK_CUR  - 设定位置为当前位置加上 offset
+3. SEEK_END  - 设定位置为文件尾加上 offset
+
+=========================================
+flock（$handle，$operation ） — 轻便的咨询文件锁定
+例子：flock('$a',LOCK_SH)
+
+1. LOCK_SH 取得共享锁定（读取的程序）不允许读写
+2. LOCK_EX  取得独占锁定（写入的程序） 不允许写
+3. LOCK_UN  释放锁定（无论共享或独占）
+------------------------------------------------------
+pathinfo — 返回文件路径的信息
+realpath — 返回规范化的绝对路径名 
+
+print_r(pathinfo('ruei.txt'));
+echo realpath(pathinfo('ruei.txt')['dirname']);
+结果：
+Array([dirname]=>. [basename]=>ruei.txt [extension]=>txt [filename]=>ruei )
+F:\demoPHP
+-----------------------------------------------------
+tmpfile（） — 建立一个临时文件 
+以读写（w+）模式建立一个具有唯一文件名的临时文件，返回一个文件句柄
+文件会在关闭后（用 fclose() ）自动被删除，或当脚本结束后
+-------------
+tempnam（$dir ， $prefix） — 建立一个具有唯一文件名的文件 
+$dir：创建文件的地址
+$prefix：创建文件的前缀
+
+tempnam('./a', 'ruei_'); //在当前目录a下面创建
+===============================
+文件上传 php.ini配置
+1.打开上传功能------file_uploads
+2.上传的位置------upload_tmp_dir
+3.上传文件的大小------upload_max_filesize
+4.脚本运行最大的时间------max_execution_time
+5.内存大小------memory_limit
+
+is_uploaded_file — 判断文件是否是通过 HTTP POST 上传的
+move_uploaded_file — 将上传的文件移动到新位置 
+
+错误
+1.文件大小超过php.ini的配置
+2.超过前台表单指定的文件大小
+3.只上传了文件的一部分
+4.没有上传任何文件
+
+案例： 多文件上传   单文件上传
+=============================
+案例：超链接下载文件  header头下载文件

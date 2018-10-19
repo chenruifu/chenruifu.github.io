@@ -1,0 +1,114 @@
+1.标量类型
+整型（int）
+浮点型（float）
+字符串型（string）
+------单引号和双引号的区别(单引号执行效率优于双引号)
+$a='ruei\'\n\tchen';
+$b="ruei'\n\tchen";
+echo $a;		ruei'\n\tchen	需加转义符\，单引号制表符不解析
+echo '<br/>';
+echo $b;		ruei' chen	解析制表符
+——————————
+$aa='chen';
+$a='ruei$aa';
+$b="ruei$aa";
+$c="$aaruei";
+$d="\$aaruei";
+$e="{$aa}ruei";
+$f=$aa.'ruei';
+echo $a;		ruei$aa		单引号不解析$aa
+echo '<br/>';
+echo $b;		rueichen		双引号解析$aa
+echo '<br/>';
+echo $c;				报错，解析的是$aaruei
+echo '<br/>';
+echo $d;		$aaruei		转义后，就不会进行解析
+echo '<br/>';
+echo $e;		chenruei		加括号之后，解析的是$aa
+echo '<br/>';
+echo $f;		chenruei		单引号解析$,需加连接符  .$aa.
+————————————
+$aa=<<<ht
+	sflsjdlfkklsdfsdf
+ht;
+结尾前面不能有空格或其他字符
+------------------------------
+布尔型（boolean）---true false
+布尔值为假的类型：
+false		0		0.0
+字符串0		null		空数组
+空字符串
+
+2.复合类型
+数组（array）
+$url=array('chen','ruei','fu');
+
+对象（object）
+class chen{
+	public $url="ruei";
+	function say(){
+		echo "chen";
+	}	
+}
+$obj= new chen();
+echo $obj->say();	chen
+echo $obj->url;	ruei	(不能加$符)
+
+3.其他类型
+资源（resource）
+
+空（NULL）
+
+
+4.查看变量类型
+gettype()--查看某个变量或常量的类型（不区分大小写）
+
+$a=123;
+echo gEtType($a);		integer
+
+5.判断变量类型---返回的是布尔值
+is_int()
+is_float()
+is_array()
+is_object()
+is_null()
+is_resourec()
+is_bool()
+
+$a='123';
+echo is_int($a);		返回空（假）
+
+
+-------------------类型转换----------------------
+1.自由转换
+$a='123';
+$a=123;
+var_dump($a);	int(123) 
+
+2.强制转换(原值类型不改变)
+$a='123';
+$b=(int)$a;
+var_dump($a);	string(3) "123"
+var_dump($b);	int(123) 
+
+3.settype(var，type)
+$a=123;
+settype($a,'string');
+var_dump($a);	string(3) "123"
+
+4.具体转换---只针对标量类型(原值类型不改变)
+intval()		转换为整型
+floatval()		转换为浮点型
+strval()		转换为字符串型
+
+$a=123;
+$b=strval($a);
+var_dump($a);	int(123)
+var_dump($b);	string(3) "123" 
+
+------- empty--检测变量是否为空，为空返回 1
+// $a=123;
+echo empty($a);	1
+
+
+	

@@ -1,0 +1,130 @@
+重复匹配
+
+n+	匹配任何包含至少一个 n 的字符串
+n*	匹配任何包含零个或多个 n 的字符串
+n?	匹配任何包含零个或一个 n 的字符串
+
+n{X}	匹配包含 X 个 n 的序列的字符串
+n{X,Y}	匹配包含 X 或 Y 个 n 的序列的字符串
+n{X,}	匹配包含至少 X 个 n 的序列的字符串
+
+^n	必须以n开头
+n$	必须以n结尾
+
+验证固话：/^(0\d{2,3})?\d{7,8}$/is
+1.区号第一位必须是0
+2.区号3-4位
+3.电话号码7-8位
+
+验证手机号码：/^1[3-8]{1}\d{9}$/is
+1.手机号码必须1开头
+2.第二个数字必须是3-8
+3.号码必须是11位
+
+验证用户名：/^[a-zA-Z]\w{3,15}$/is
+1.首字母必须为字母
+2.用户名必须3-15位
+=====================
+贪婪匹配和禁止贪婪
+
+$str='baaaaaaaaaaaaaa';
+preg_match('/ba+/',$str,$arr);
+echo $arr[0];	//baaaaaaaa
+会贪婪匹配最多的个数
+--------------
+$str='baaaaaaaaaaaaaa';
+preg_match('/ba+?/',$str,$arr);
+echo $arr[0];	//ba
+阻止贪婪，只匹配一个a
+------------
+$str='baaaaaaaa';
+preg_match('/ba*?/',$str,$arr);
+echo $arr[0];	//b
+匹配附和正则最少的规则
+-----------------------
+===========================
+\b	匹配一个单词边界，也就是指单词和空格间的位置
+\B	匹配非单词边界
+
+$str='chenruei fu';
+preg_match('/ruei\b/',$str,$arr);
+echo $arr[0];	//ruei
+------------------
+$str='chenrueifu';
+preg_match('/ruei/',$str,$arr);
+echo $arr[0];	//ruei
+------------------
+$str='chenrueifu';
+preg_match('/ruei\b/',$str,$arr);
+echo $arr[0];	//错误
+-------------------------
+边界匹配
+\b、\B、 \A、 \Z、\z、 ^、$
+----------------
+断言匹配
+?<=     ?=
+
+$str='chenrueifu';
+preg_match('/(?<=chen).*(?=fu)/',$str,$arr);
+echo $arr[0];	//ruei
+取得前面是chen,结尾是fu的中间段
+
+$str='www.baidu.com,www.qq.com,www.abc.com';
+preg_match_all('/(?<=www\.).*?(?=\.com)/',$str,$arr);
+print_r($arr);
+结果：Array ( [0] => Array ( [0] => baidu [1] => qq [2] => abc ) ) 
+
+============================
+模式修饰符（模式修正符）
+
+i	不区分大小写模式的匹配（默认是区分大小写的）
+m	默认情况下，PCRE 认为目标字符串是由单行字符组成的(然而实际上它可能会包		含多行)，加了m会按照行来匹配
+s	匹配所有字符，包含换行符(.不能匹配到换行符)
+x	忽略表达式的空白字符
+U	禁止贪婪匹配，就近匹配
+A	强制重字符串的开始位置搜索
+D	设置$符号仅匹配到目标字符串的结尾  设置m模式修正符后失效
+e 	将替换字符串做为表达式来使用
+
+案例：i(不区分大小写)
+$str='www.baidu.com,www.qq.com,www.abc.com';
+echo preg_match('/baIDu/i', $str).'<br>';	//返回1
+echo preg_match('/baIDu/', $str);		//返回0
+
+不区分大小写
+----------------------
+案例：m
+$str="www.baidu.com\nwww.qq.com\nwww.abc.com";//注意单双引号
+preg_match_all('/^www/m', $str,$arr1);
+preg_match_all('/^www/', $str,$arr2);
+print_r($arr1);	//Array ( [0] => Array ( [0] => www [1] => www [2] => www ) ) 
+echo '<br>';
+print_r($arr2);	//Array ( [0] => Array ( [0] => www ) ) 
+
+因为有换行符，双引号"会解析换行符\n；加了m正则会按行来匹配；等价于分3个字符串来匹配
+----------------------
+案例：s
+$str="www.baidu.com\nwww.qq.com\nwww.abc.com";
+preg_match_all('/^(www\.)(.*)(\.com)$/s', $str,$arr1);
+preg_match_all('/^(www\.)(.*)(\.com)/', $str,$arr2);
+print_r($arr1[2]);	//Array ( [0] => baidu.com www.qq.com www.abc ) 
+echo '<br>';
+print_r($arr2[2]);	//Array ( [0] => baidu ) 
+
+匹配所有字符，包含换行符(.不能匹配到换行符)；第一个把换行符匹配了，第一个因为有换行符，不是以.com结尾，所以去掉$，才能匹配到！
+-----------------------------------
+案例：U
+$str="www.baidu.comwww.qq.comwww.abc.com";
+preg_match('/^(www\.)(.*)(\.com)/U', $str,$arr1);
+preg_match('/^(www\.)(.*)(\.com)/', $str,$arr2);
+print_r($arr1[2]);	//baidu
+echo '<br>';
+print_r($arr2[2]);	//baidu.comwww.qq.comwww.abc
+
+禁止贪婪匹配，第一个禁止贪婪所以只匹配了baidu
+----------------------------------
+案例：A
+
+
+
+

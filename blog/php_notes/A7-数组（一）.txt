@@ -1,0 +1,320 @@
+数组：在一个变量中，存储一个或多个值。每个元素都有访问ID
+
+------索引数组
+$arr=array('chen','ruei','fu');
+echo $arr[0].'<br/>';
+echo $arr[1].'<br/>';
+echo $arr[2].'<br/>';
+
+------关联数组
+$arr=array('name'=>'chen','age'=>'18','job'=>'PHP');
+echo $arr['name'].'<br/>';
+echo $arr['age'].'<br/>';
+echo $arr['job'].'<br/>';
+
+------多维数组
+$arr=array(array('name'=>'chen','age'=>'18','job'=>'PHP'),
+	array('name'=>'rieo','age'=>'22','job'=>'HTML'));
+print_r($arr);
+
+-------------------------------------------------
+------定义数组
+$arr[0]="chen";
+$arr[1]="ruei";
+$arr[2]="fu";
+print_r($arr);	//Array ( [0] => chen [1] => ruei [2] => fu ) 
+
+------定义（没有指定索引）
+$arr[]="chen";
+$arr[]="ruei";
+$arr[]="fu";
+print_r($arr);	//结果同上
+
+------定义二维数组
+$arr=array();
+$arr['电脑']['内存']='2GB';
+$arr['电脑']['硬盘']='320GB';
+$arr['电脑']['显示器']='14寸';
+$arr['电脑']['CPU']='2.6GHz';
+$arr['程序']['PHP']='PHP基础';
+$arr['程序']['HTML']='Div';
+$arr['程序']['CSS']='样式';
+$arr['程序']['JAVA']='JavaScript';
+$arr['程序']['IOS']='客户端';
+$arr['系统']='windows';
+echo '<pre>';
+print_r($arr);
+
+结果：
+Array
+(
+    [电脑] => Array
+        (
+            [内存] => 2GB
+            [硬盘] => 320GB
+            [显示器] => 14寸
+            [CPU] => 2.6GHz
+        )
+
+    [程序] => Array
+        (
+            [PHP] => PHP基础
+            [HTML] => Div
+            [CSS] => 样式
+            [JAVA] => JavaScript
+            [IOS] => 客户端
+        )
+
+    [系统] => windows
+)
+------------------------------------------------
+===== 一维数组遍历
+$arr=array('chen','ruei','fu');
+foreach($arr as $val){
+	echo $val.'<br/>';
+}
+结果：
+chen
+ruei
+fu
+--------------------------------
+$arr=array('name'=>'chen','age'=>'18','job'=>'PHP');
+foreach($arr as $name=>$val){
+	echo $name.'=>'.$val.'<br/>';
+}
+结果：
+name=>chen
+age=>18
+job=>PHP
+
+====== 二维数组遍历
+$arr=array(array('name'=>'chen','age'=>'18','job'=>'PHP'),
+	array('name'=>'rieo','age'=>'22','job'=>'HTML'),'不是数组');
+foreach($arr as $k=>$val){
+	if(is_array($val)){
+		echo $k.'{<br/>';
+		foreach ($val as $key=>$value){
+			echo $key.'=>'.$value.'<br/>';
+		}
+		echo '}';
+	}else{
+		echo $k.'=>'.$val.'<br/>';
+	}
+	echo '<br/>';
+}
+结果：
+0{
+name=>chen
+age=>18
+job=>PHP
+}
+1{
+name=>rieo
+age=>22
+job=>HTML
+}
+2=>不是数组
+
+=======多维数组遍历（同上类似）
+
+//数据库查询数据
+$db=new mysqli('localhost','root','root','ruei') or die('连接错误');
+$sql="select * from user";
+$res=$db->query($sql);
+while($row=$res->fetch_assoc()){
+	echo '<pre>';
+	print_r($row);
+}
+
+
+===============================
+==2222==========================
+1.string implode(string,array)---把数组组合成字符串
+
+$arr=array('chen','ruei','fu');
+echo implode($arr);	//chenrueifu
+echo implode('--',$arr);	//chen--ruei--fu
+---------------------------------
+2.array explode(string,string,[int $limit])---把字符串分割成数组
+如果设置了 limit 参数并且是正数，则返回的数组包含最多 limit 个元素，而最后那个元素将包含 string 的剩余部分。 
+如果 limit 参数是负数，则返回除了最后的 -limit 个元素外的所有元素。 
+如果 limit 是 0，则会被当做 1。
+
+$str='chen,ruei,fu';
+print_r(explode(',',$str));	//Array ( [0] => chen [1] => ruei [2] => fu ) 
+print_r(explode(',',$str,2));	//Array ( [0] => chen [1] => rueifu ) 
+---------------------------------
+3.bool in_array($needle,array,[bool $strict])---检测内容是否在数组中
+$strict默认false,设置为true还会检查类型是否相同
+
+$arr=array('chen','ruei','fu',1,2);
+var_dump(in_array('1',$arr));		//bool(true) 
+var_dump(in_array('chen',$arr));	//bool(true) 
+var_dump(in_array('1',$arr,true));	//bool(false) 
+-------------------------------------------------------
+4.each(array)---把数组元素拆分成新的数组
+
+echo '<pre>';
+$arr=array('ruei','fu');
+$arr1=array('name'=>'rueifu','age'=>'22');
+print_r(each($arr1));
+print_r(each($arr1));
+print_r(each($arr));
+print_r(each($arr));
+
+结果：
+Array
+(
+    [1] => rueifu
+    [value] => rueifu
+    [0] => name
+    [key] => name
+)
+Array
+(
+    [1] => 22
+    [value] => 22
+    [0] => age
+    [key] => age
+)
+Array
+(
+    [1] => ruei
+    [value] => ruei
+    [0] => 0
+    [key] => 0
+)
+Array
+(
+    [1] => fu
+    [value] => fu
+    [0] => 1
+    [key] => 1
+)
+------------------------------------------
+5.list(mixed,[maxed......])---把数组元素赋值给变量
+注意：只能用于索引数组
+
+$arr=array('ruei','fu','chen');
+list($a,$b,$c)=$arr;
+echo $a;		//ruei
+echo $b;		//fu
+echo $c;		//chen
+
+//关联数组
+$arr=array('name'=>'rueifu','age'=>'22');
+while($arrEach=each($arr)){
+	list($a,$b)=$arrEach;	
+	echo $a.'<br/>';
+	echo $b.'<br/>';
+}
+
+=================================
+==3333数组统计函数====================
+1.int count(array,[int])---统计数组中元素的个数
+
+$arr=array('ruei','fu',array('wen','xiang'));
+echo count($arr);		//3
+echo count($arr,1);		//5
+-----------------------------
+2.reset(array)---把数组内部指针移动到数组第一个元素，并返回第一个数组单元
+3.end(array)---将 array 的内部指针移动到最后一个单元并返回其值
+4.next(array)--把数组内部指针移动到下一个，并返回当前指针，如果到结尾返回false,如果当前元素值为空，或者0，也返回false
+5.prev(array)--把数组内部指针移动到上一个，并返回当前指针，如果到顶返回false,如果当前元素值为空，或者0，也返回false
+6.current(array)---回当前被内部指针指向的数组单元的值
+7.key(array)---返回数组中内部指针指向的当前单元的键名
+
+===============================
+==4444数组的处理函数================
+1.in_array()---判断内容是否在数组中（笔记在上面）
+2.string array_search($needle,array,[bool])---查找内容是否为数值的键值，存在返回键名，不存在返回false
+
+$arr=array('chen','ruei','fu',0);
+$arr1=array('name'=>'ruei','age'=>'22','job'=>'html5');
+var_dump(array_search('22',$arr1));		//age
+var_dump(array_search('0',$arr));		//3
+var_dump(array_search('0',$arr,true));		//bool(false)
+-------------------------------------------------
+3.array_change_key_case()---更改数组键名大小写（大小写替换后一样键名会被覆盖,不常用）
+CASE_UPPER--大写
+CASE_LOWER--小写（默认值）
+
+$arr1=array('name'=>'ruei','age'=>'22','job'=>'html5');
+print_r(array_change_key_case($arr1,CASE_UPPER));	//name变为NAME...
+------
+$arr1=array('name'=>'ruei','age'=>'22','job'=>'html5','Job'=>'PHP');
+print_r(array_change_key_case($arr1,CASE_UPPER));
+结果：
+Array ( [NAME] => ruei [AGE] => 22 [JOB] => PHP ) 
+---------------------------------------------------
+4.array_chunk(array , size ,[bool])---把数组拆分
+
+$arr=array('chen','ruei','fu');
+$arr1=array('name'=>'ruei','age'=>'22','job'=>'html5');
+print_r(array_chunk($arr,2));
+print_r(array_chunk($arr1,2));
+print_r(array_chunk($arr1,2,true));
+结果：
+Array
+(
+    [0] => Array
+        (
+            [0] => chen
+            [1] => ruei
+        )
+
+    [1] => Array
+        (
+            [0] => fu
+        )
+
+)
+Array
+(
+    [0] => Array
+        (
+            [0] => ruei
+            [1] => 22
+        )
+
+    [1] => Array
+        (
+            [0] => html5
+        )
+
+)
+Array
+(
+    [0] => Array
+        (
+            [name] => ruei
+            [age] => 22
+        )
+
+    [1] => Array
+        (
+            [job] => html5
+        )
+
+)
+----------------------------------------------------
+5.array_combine(array,array)--生成新数组（数组元素不同，返回假，警告）
+
+$arrKeys=array('name','age','job');
+$arrVal=array('ruei','18','PHP');
+print_r(array_combine($arrKeys,$arrVal));
+结果：
+Array
+(
+    [name] => ruei
+    [age] => 18
+    [job] => PHP
+)
+-------------------------------------------
+
+
+
+
+
+
+

@@ -1,0 +1,151 @@
+imagepolygon — 画一个多边形 
+imagepolygon(图像资源，坐标数组，坐标个数，颜色)
+
+$img=imagecreate(300,300);
+imagecolorallocate($img,255,255,255);
+$red=imagecolorallocate($img, 255,0, 0);
+header("content-type:image/jpeg");
+$points=array(50,50,50,100,100,100,150,50);
+imagepolygon($img, $points,4, $red);
+imagejpeg($img);
+------------------------------------------------------
+imagechar — 水平地画一个字符 
+imagecharup — 垂直地画一个字符
+imagechar(图像资源，字体大小，X，Y，$str，颜色);
+
+字体大小最大为5，设置成100还是以5的字号大小显示
+只能显示一个字符，所有下面用了循环输出
+*******
+$img=imagecreate(300,300);
+imagecolorallocate($img,255,255,255);
+$red=imagecolorallocate($img, 255,0, 0);
+imagesetthickness($img, 8);
+header("content-type:image/jpeg");
+$str='chenrueifu';
+for($i=0;$i<strlen($str);$i++){
+	imagechar($img,5,20+$i*10,5,$str[$i],$red);
+}
+for($i=0;$i<strlen($str);$i++){
+	imagecharup($img,5,10,150-$i*10,$str[$i],$red);
+}
+imagejpeg($img);
+-------------------------------------------------
+imagestring — 水平地画一行字符串 
+imagestringup — 垂直地画一行字符串 
+imagestring(图像资源，字体大小，X，Y，$str，颜色);
+
+//效果同上
+$img=imagecreate(300,300);
+imagecolorallocate($img,255,255,255);
+$red=imagecolorallocate($img, 255,0, 0);
+imagesetthickness($img, 8);
+header("content-type:image/jpeg");
+$str='chenrueifu';
+imagestring($img, 5, 20, 20, $str, $red);
+imagestringup($img, 5, 20, 150, $str, $red);
+imagejpeg($img);
+================================
+get_loaded_extensions — 返回所有编译并加载模块名的 array
+
+get_loaded_extensions()；
+返回已加载的所有库名，如果没有加载gd库，图像类函数就不能用
+--------------------------
+get_extension_funcs — 返回模块函数名称的数组
+
+get_extension_funcs('gd')；
+返回gd库中，所有的函数名，例如：imagejpeg，imagestring
+----------------------------------
+extension_loaded — 检查一个扩展是否已经加载  
+
+if(extension_loaded('gd')){
+	echo '图像处理类已加载';
+}else{
+	die('图像处理类未加载');
+}
+======================================
+imagefontwidth — 取得字体宽度 
+imagefontheight — 取得字体高度 
+imagefontwidth(字号大小)
+
+//让水印文字居中显示
+$img=imagecreate(300,300);
+imagecolorallocate($img,255,255,255);
+$red=imagecolorallocate($img, 255,0, 0);
+imagesetthickness($img, 8);
+header("content-type:image/jpeg");
+$str='chenrueifu';
+$str_len=strlen($str);
+$x=150-(imagefontwidth(5)*$str_len)/2;
+$y=150-imagefontheight(5)/2;
+imagestring($img, 5, $x,$y, $str, $red);
+imagejpeg($img);
+==============================
+imagettfbbox — 取得使用 TrueType 字体的文本的范围
+
+imagettfbbox(字体大小，旋转角度，字体路径，文本);
+返回4个坐标点的数组，依次：左下、右下、右上、左上
+-----------------------------------
+imagettftext — 用 TrueType 字体向图像写入文本 
+
+imagettftext(图像资源，字体大小，旋转角度， $x, $y, $clolr,字体路径, $str);
+以字体底部为基线
+返回4个坐标点的数组，依次：左下、右下、右上、左上
+
+$img=imagecreate(300,300);
+imagecolorallocate($img,255,255,255);
+$red=imagecolorallocate($img, 255,0, 0);
+header("content-type:image/jpeg");
+$str='你好';
+$angle=35;//旋转角度
+$font='fz.ttf';//ttf文件
+$fontSize=16;//字体大小
+$arr=imagettfbbox($fontSize,$angle,$font,$str);
+$x=150-abs((abs($arr[2])-abs($arr[0])))/2;
+$y=150+abs((abs($arr[1])-abs($arr[5])))/2;
+$arr=imagettftext($img,$fontSize,$angle, $x, $y, $red,$font, $str);
+imagejpeg($img);
+=================================
+案例：图像验证码生成类------099-imageCode
+=================================
+imagerotate — 用给定角度旋转图像
+imagerotate(图像资源, 旋转角度,旋转后空白填充色);
+
+//将logo图片旋转30度
+$logo=imagecreatefrompng('logo.png');
+$logo2=imagerotate($logo, 30,$red);
+header("content-type:image/png");
+imagepng($logo2);
+-------------------------------------
+imagecopy — 拷贝图像的一部分 
+imagecopymerge — 拷贝并合并图像的一部分
+imagecopy(要加水印的图像资源，水印图片，加水印的位置X，加水印的位置X，
+水印图片的起始X, 水印图片的起始Y，裁剪水印图片的宽，裁剪水印图片的高);
+
+imagecopymerge(要加水印的图像资源，水印图片，加水印的位置X，加水印的位置X，
+水印图片的起始X, 水印图片的起始Y，裁剪水印图片的宽，裁剪水印图片的高，水印的透明度);
+
+//加图片水印
+$img=imagecreatefromjpeg('photo.jpg');
+$logo=imagecreatefrompng('logo1.png');
+imagecopy($img, $logo, 0, 0, 0, 0, imagesx($logo), imagesy($logo));
+header("content-type:image/gif");
+imagegif($img);
+============================
+imagecopymergegray — 用灰度拷贝并合并图像的一部分 
+本函数和 imagecopymerge()  完全一样只除了合并时通过在拷贝操作前将目标像素转换为灰度级来保留了原色度
+------------------------------
+imagecopyresampled — 重采样拷贝部分图像并调整大小 
+imagecopyresampled(要加水印的图像资源，水印图片，加水印的位置X，加水印的位置X，水印图片的起始X, 水印图片的起始Y, 调整的大小X, 调整的大小Y, 裁剪水印图片的宽，裁剪水印图片的高）；
+
+$img=imagecreatetruecolor(100,100);
+$logo=imagecreatefrompng('logo1.png');
+imagecopyresampled($img, $logo, 0, 0, 0, 0, 100, 10imagesx($logo), imagesy($logo)
+度);
+header("content-type:image/gif");
+imagegif($img);
+-----------------------------------
+imagecopyresized — 拷贝部分图像并调整大小 
+与imagecopyresampled一样，只是图像会不清晰
+
+
+=======

@@ -1,0 +1,18 @@
+载入外部文件
+
+include()---未找到文件，发出警告
+
+require()---未找到文件，致命错误（下面代码不执行）
+
+被包含文件先按参数给出的路径寻找，如果没有给出目录（只有文件名）时则按照 include_path 指定的目录寻找。如果在 include_path 下没找到该文件则 include 最后才在调用脚本文件所在的目录和当前工作目录下寻找
+
+格式：
+include('1.php');
+include '1.php';
+
+
+
+include_once();----include_once '1.php';---include_once('1.php');
+require_once();----require_once '1.php';---require_once('1.php');
+只载入一次文件，如果该文件载入过，则不载入
+

@@ -1,0 +1,152 @@
+float disk_total_space  ( string $directory  )
+以浮点返回一个目录的磁盘总大小字节数， 或者在失败时返回 FALSE 
+
+echo disk_total_space('E:')/1024/1024/1024;	//返回E盘的磁盘总大小
+---------------
+float disk_free_space  ( string $directory  )  别名：diskfreespace
+返回目录中的可用空间 
+
+echo disk_free_space('E:')/1024/1024/1024;	//返回E盘的磁盘的可用空间
+---------------------------------
+round(val,[precision=0])--对浮点数进行四舍五入
+val：要处理的值 
+precision：可选的十进制小数点后数字的数目
+---------------------------------
+number  pow  ( number  $base  , number  $exp )--返回 base 的 exp 次方的幂
+
+echo round(disk_total_space('E:')/pow(1024,3),2);	//142.01G
+--------------------------------------------------
+--------------------------------------------------
+DIRECTORY_SEPARATOR
+一个显示系统分隔符的命令，linux和window文件目录符号不一样（/，\）
+
+string basename  ( string $path  [, string $suffix  ] )
+返回路径中的文件名部分
+如果文件名是以 suffix 结束的，那这一部分也会被去掉
+
+echo __FILE__;//F:\demoPHP\b2.php
+echo substr(strrchr(__FILE__, DIRECTORY_SEPARATOR),1);
+//方法一：字符串截取；b2.php
+echo basename(__FILE__);
+//方法二：内置函数；b2.php
+-----------------------------
+string dirname  ( string $path  )--返回路径中的目录部分
+
+echo __FILE__;//F:\demoPHP\b2.php
+echo substr(__FILE__,0,strrpos(__FILE__, DIRECTORY_SEPARATOR));
+//方法一：字符串截取；F:\demoPHP
+echo dirname(__FILE__);
+//方法二：内置函数；F:\demoPHP
+echo dirname(dirname(__FILE__));
+//F:\
+-----------------------------
+bool file_exists  ( string $filename  )---检查文件或目录是否存在
+string filetype  ( string $filename  )---取得文件类型 
+=======================================
+bool is_dir ( string $filename  )---判断给定文件名是否是一个目录
+---
+bool mkdir  ( string $pathname  [, int $mode  = 0777  [, bool $recursive  = false  [, resource $context  ]]] )---新建目录
+$pathname：指定目录名
+$mode：目录权限
+$recursive：为true则为递归创建
+---
+bool rmdir  ( string $dirname  [, resource $context  ] )---删除目录 
+
+//如果当前目录061文件夹存在，8秒后删除，不存在8秒后新建
+if(is_dir('061')){
+	sleep(8);
+	rmdir('061');//如果061文件夹里面还有文件，删除不成功，报警告
+}else{
+	sleep(8);
+	mkdir('061');
+}
+***mkdir能创建多层目录，$recursive设置为true
+-----------------------------------------------------
+string getcwd  ( void )---取得当前工作目录
+bool chdir  ( string $directory  )---改变目录，将 PHP 的当前目录改为 directory
+
+echo getcwd(); 	//F:\demoPHP
+chdir('red');
+echo getcwd();	//F:\demoPHP\red
+----//如果当前目录下，没有red这个文件夹；则报警告
+chdir('../');
+echo getcwd();	//F:\
+==================================
+bool rename  ( string $oldname  , string $newname  [, resource $context  ] )
+重命名一个文件或目录
+
+array scandir  ( string $directory  [, int $sorting_order  [, resource $context  ]] )
+返回一个 array ，包含有 directory 中的文件和目录
+
+//遍历文件目录
+function eachScandir($dir){
+	$arr=scandir($dir);
+	foreach ($arr as $val) {
+		if($val!='.' && $val!='..'){
+			$vals=$dir.'\\'.$val;	
+			if(is_dir($vals)){
+				eachScandir($vals);
+			}else{
+				echo $dir.'\\'.$val.'<br/>';
+			}
+		}
+	}
+}
+$dir=getcwd();
+eachScandir($dir);
+=================================
+array glob  ( string $pattern  [, int $flags  = 0  ] )
+寻找与模式匹配的文件路径
+
+$arr = glob('*.php');
+print_r($arr);	//获取文件当前目录的所有.php文件
+-------------------------------------
+opendir — 打开目录句柄
+readdir — 从目录句柄中读取条目
+rewinddir — 倒回目录句柄
+closedir — 关闭目录句柄
+
+//遍历目录
+$a=opendir('.');	//打开当前目录句柄
+while($val=readdir()){	//遍历当前目录所有文件和文件夹
+	echo $val.'<br/>';
+}
+rewinddir($a);	//重置目录句柄的索引到开头，没有此块下面的循环没效果
+while($val=readdir()){
+	ech	o $val.'<br/>';
+}
+closedir($a);	//关闭目录句柄
+===========================
+int filesize  ( string $filename  )---取得文件大小 
+
+bool unlink  ( string $filename  [, resource $context  ] )---删除文件
+bool rmdir  ( string $dirname  [, resource $context  ] )---删除目录 
+
+//遍历获得当前目录所有文件的总大小
+echoDir('.');
+function echoDir($dir){
+	$arr=dir($dir);
+	static $fileSize=0;//需设置静态
+	while(($enty=$arr->read())!==false){
+		if($enty!='.'&&$enty!='..'){
+			$vals=$dir.'\\'.$enty;
+			if(is_dir($vals)){
+				echoDir($vals);
+			}else{
+				echo $dir.'\\'.$enty.'&nbsp;&nbsp;'.filesize($dir.'\\'.$enty).'<br/>';
+				$fileSize+=filesize($dir.'\\'.$enty);
+			}
+		}
+
+	}
+	return $fileSize;
+}
+//rewind — 倒回文件指针的位置；用法 $arr->rewind()
+//close---关闭目录；用法 $arr->close()
+==============================================
+删除目录函数方法
+
+案例：delDir.php
+
+
+

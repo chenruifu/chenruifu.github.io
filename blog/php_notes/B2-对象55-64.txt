@@ -1,0 +1,267 @@
+abstract 抽象类
+继承一个抽象类的时候，子类必须定义父类中的所有抽象方法
+类名和函数名必须加 abstract
+必须有子类继承
+可以有普通的方法函数，属性
+跟final相反；final是不让覆盖，abstract 抽象类是必须覆盖
+
+abstract class a{
+	abstract function ruei();	//不能有大括号
+}
+class c extends a{
+	function ruei(){	//没有此函数报错
+		echo '111';
+	}
+}
+$cus = new c();
+$cus->ruei();	//111
+--------------------------------------------------
+接口--interface
+可以定义常量 const
+只能定义抽象方法
+不能定义实体方法
+可以多继承
+类可以实现多个接口，用逗号来分隔多个接口的名称
+******跟抽象类有区别*******
+实现接口--implements 
+
+interface a{
+	const AAA='你选择的方法是：';
+	function add();	//继承的类必须有这两个方法
+	function del();
+}
+class b implements a{
+	function add(){	
+		echo self::AAA."添加";
+	}
+	function del(){
+		echo self::AAA."删除";
+	}
+	function abc(){
+		echo 111;
+	}
+}
+$cus = new b();
+$cus->del();
+=================================
+魔术常量：(都区分大小写)
+__CLASS__	返回类（class）名
+__METHOD__	返回类（class）名和方法（function）名【class : : function】
+__FUNCTION__	返回方法（function）名
+__FILE__		返回方法（function）名
+__DIR__		等价于 dirname(__FILE__)，php5.3以上版本
+
+string dirname  ( string $path  )---返回路径中的目录部分 
+
+echo __File__;	//F:\demoPHP\b1.php
+echo '<br/>';
+echo dirname(__File__);	//F:\demoPHP
+
+使用场景：定义项目路径（常量）  define('path',dirname(__File__));
+======================================
+魔术方法： 
+__clone------复制一个对象 
+
+class a{
+	public $abc=1;
+	function __clone(){
+		$this->abc+=1;
+	}
+}
+$obj=new a();
+echo $obj->abc;	//1
+$obj1=$obj;
+echo $obj1->abc;	//1
+$obj2=clone $obj;	//复制对象时，自动运行__clone()方法
+echo $obj2->abc;	//2
+-------------------------------------------------
+__toString()--方法用于一个类被当成字符串时应怎样回应；必须是字符串
+
+class a{
+	public $a=1;
+	public $b=2;
+	public $c=3;
+	function chen(){
+		echo 'chen';
+	}
+	function ruei(){
+		echo 'ruei';
+	}
+	function fu(){
+		// echo 'fu';
+		$vars=get_object_vars($this);
+		print_r($vars);
+	}
+	function __toString(){
+		$className=__CLASS__;
+		$funcs=implode('<br/>',get_class_methods(__CLASS__));
+		$vars=get_object_vars($this);//返回的是关联数组
+		$str='';
+		foreach($vars as $v=>$val){
+			$str.=$v.'=>'.$val.'<br/>';
+		}
+		return '<h3>类名</h3>'.$className.'<h3>函数名</h3>'.$funcs.'<h3>变量名</h3>'.$str;
+	}
+}
+
+$obj= new a();
+echo $obj;
+-----------------------------------------------
+__call($name，$arguments)--在对象中调用一个不可访问方法时，__call() 会被调用
+$name 参数是要调用的方法名称
+$arguments 参数是一个索引数组，包含着要传给方法 $name 的参数
+
+class a{
+	function ruei(){
+		echo 'ruei';
+	}
+	function chen(){
+		echo 'chen';
+	}
+	function __call($name,$arguments){
+		echo $name.'不是类中的方法';
+		echo '<br/>';
+		print_r($arguments);
+	}
+}
+
+$obj=new a();	//fu不是类中的方法
+$obj->fu('1');	//Array ( [0] => 1 )	
+==============================
+isset()--检测变量是否为空
+unset()--检测变量是否被销毁
+当对不可访问属性调用 isset() 或 empty() 时，__isset()会被调用
+当对不可访问属性调用 unset() 时，__unset()会被调用
+
+serialize() 函数会检查类中是否存在一个魔术方法 __sleep()。如果存在，该方法会先被调用，然后才执行序列化操作
+__wakeup() 经常用在反序列化操作中，例如重新建立数据库连接，或执行其它初始化操作
+
+=================================
+__autoload()---尝试加载未定义的类
+
+class ruei{
+	function a(){
+		echo 'a';
+	}
+}
+function __autoload($class){		//运行结果：输出此函数的结果：v
+	echo $class;
+}
+
+$obj = new v();	//这段代码还是报错，找不到v这个类
+------------------------------------------
+spl_autoload_register()--注册__autoload()函数 
+1.可以传了一个字符串，替换__autoload此函数名
+
+spl_autoload_register('chen');//定义函数名
+class ruei{
+	function a(){
+		echo 'a';
+	}
+}
+function __autoload($class){	//必须要传参
+	echo $class;
+}
+function chen(){	//此函数在为找到类名时，调用
+	echo '重新定义';
+}
+
+$obj = new v();	//这段代码还是报错，找不到v这个类
+------------------------------------------------
+2.可以传入数组，未定义的类就加载（类）里面的（方法）；方法必须是静态方法
+
+spl_autoload_register(array('ruei','a'));	
+//调用类：ruei，里面的方法 a；方法必须是静态方法
+class ruei{
+	static function a(){
+		echo 'a';
+	}
+}
+$obj = new v();
+
+单入口文件，自动载入加载的类--- 案例 060
+================================
+在给不可访问属性赋值时，__set() 会被调用；必须两个参数
+读取不可访问属性的值时，__get() 会被调用；必须一个参数
+
+class ruei{
+	private	$a;
+	function __set($name,$val){
+		echo '私有属性不能被赋值';
+	}
+	function __get($name){
+		echo '私有属性不能被获取';
+	}
+}
+$obj= new ruei();
+$obj->a;		//调用__get方法；输出：私有属性不能被获取
+$obj->a=3;	//调用__set方法；输出：私有属性不能被赋值
+------------------------------------
+array get_class_methods  ( mixed  $class_name  )
+返回由类的方法名组成的数组（索引数组）
+array get_class_vars  ( string $class_name  )
+返回由类的默认属性组成的数组（关联数组）
+
+class ruei{
+	public $a;
+	public $b;
+	private $c;
+	function __construct(){
+		print_r(get_class_methods('ruei'));
+		print_r(get_class_vars('ruei'));
+	}
+	function __set($name,$val){
+		echo '私有属性不能被赋值';
+	}
+	function __get($name){
+		echo '私有属性不能被获取';
+	}
+}
+
+$obj= new ruei();
+结果：
+Array ( [0] => __construct [1] => __set [2] => __get )
+Array ( [a] => [b] => [c] => ) 
+
+案例：权限管理的配置
+1.判断传入的类方法是否在类中get_class_methods
+2.再判断是否有权限（数据库读取权限）
+============================
+get_class_methods('ruei')--返回由类方法组成的索引数组
+get_class_vars('ruei')---返回由类属性组成的关联数组
+----------------------------------------------
+array get_object_vars  ( object $obj  )---返回由对象属性组成的关联数组
+string get_parent_class  ([ mixed  $obj  ] )---返回对象或类的父类名
+------------------------------------------------
+bool is_subclass_of  ( object $object  , string $class_name  )
+bool is_a  ( object $object  , string $class_name  [, bool $allow_string  = FALSE] )
+两者都是判断对象是否是该类的子类；第一个参数对象，第二个参数类名
+不推荐使用后者，PHP不推荐使用
+
+class a{	
+}
+class b extends a{
+	private $a;
+	private $b;
+	public $c;
+}
+$obj= new b();
+print_r(get_object_vars($obj));	//Array ( [c] => )，私有属性获取不到
+echo get_parent_class($obj);		//a
+echo is_subclass_of($obj,'a');		//1；对象$obj,是类a的子类
+
+bool interface_exists  ( string $interface_name  [, bool $autoload  = true  ] )
+检查接口是否已被定义；autoload 默认是否调用 __autoload 
+
+interface ruei{
+	function a();
+	function b();
+}
+echo interface_exists('ruei');	//1接口ruei已定义
+==================================
+string get_class  ([ object $obj  ] )---返回对象的类名
+array get_declared_classes  ( void )---返回由已定义类的名字所组成的数组
+array get_declared_interfaces  ( void )---返回一个数组包含所有已声明的接口 
+后两者返回的数组，会带有PHP默认的类和接口
+
+

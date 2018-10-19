@@ -1,0 +1,262 @@
+一、定义字符串
+1.单引号 ------ ''		不解析制表符和变量
+2.双引号 ------ ""		解析制表符和变量
+3.定界符 ------ <<<		解析制表符和变量
+
+$a='我是单引号chen\n';
+$b="我是双引号chen$a\n";
+$c=<<<chen
+我是定界符\$a:{$a},\$b:$b;
+chen;
+echo $a;		//我是单引号chen\n
+echo '<br/>';
+echo $b;		//我是双引号chen我是单引号chen\n
+echo '<br/>';
+echo $c;		我是定界符\$a:   ,$b:   
+-------------------------------------------
+二、字符串处理函数
+strlen	获取字符串的长度
+
+$a="chen";
+echo strlen($a);	//4
+------------------------------
+A.处理字符串的空格
+trim	对字符串左右空格删除
+ltrim	对字符串左部空格删除
+rtrim	对字符串右部空格删除
+
+$a="  chen  ";
+var_dump($a);
+var_dump(trim($a));	//4 
+var_dump(ltrim($a));	//6
+var_dump(rtrim($a));	//6
+------------------------------------
+B.对字符串大小写的处理
+strtolower	将字符串转换成小写
+strtoupper	将字符串转换成大写
+ucfirst		首字母大写（其余不会转化为小写）
+ucwords		单词首字母大写
+
+strtolower($a)；
+----------------------------------------
+C.字符串填充
+str_pad('字符串'，'长度'，'[填充内容]'，'[填充反向]')
+填充方向：STR_PAD_BOTH	左右两侧进行填充，填充为奇数，右侧多填
+	STR_PAD_LEFT	左侧填充
+	STR_PAD_RIGHT	右侧填充
+填充方向：默认右侧填充(必须大写)
+填充内容：默认空格
+*************
+如果长度小于等于原字符串或是负数的时候，填充的内容不执行
+
+$a="chen";
+var_dump(str_pad($a,5,1,STR_PAD_LEFT));	//结果 string(5) "1chen" 
+-------------------------------------
+D.字符串翻转函数
+strrev
+
+$a="chen ";
+var_dump(strrev($a));	//结果 string(5) " nehc" 
+-------------------------------------
+E.md5加密
+md5()
+
+md5($a)；
+-------------------------------------
+F.格式化金额字符串(int类型也可用)
+number_format('字符串'，小数位数，[[小数点]，千位分隔符])
+*********
+小数点，千位分隔符 必须一起使用
+小数点默认：.
+千位分隔符默认：,
+
+$a=12345;
+echo number_format($a,3);		//12,345.000
+-----------------------------------
+G.字符串拆分成数组
+explode('用于在哪个字符串进行拆分'，'拆分的字符串'，'[返回数组元素的数目]')
+*************
+返回数组元素的数目：没有设置，默认都拆分
+
+$a=213145;
+print_r(explode(1,$a,2));		//2  3145
+------------------------------------
+H.数组元素组合成字符串
+implode('[连接字符串]'，'数组')
+连接字符串：默认为空
+
+$a=array('chen','ruei','fu',1);
+print_r(implode($a));		//chenrueifu1
+print_r(implode('--',$a));		//chen--ruei--fu--1
+
+=======================================
+==33333===================================
+三、字符串的输出
+
+1.echo()==echo '';
+输出一个或多个字符串
+
+2.print()==print '';
+输出字符串，echo效率较优
+
+3.printf()-------不常用
+格式化输入字符串
+-----------------------------
+四、字符串的截取
+1.substr  ($string  , int $start  [, int $length  ] )
+对字符串进行指定数量的截取
+$start:为负数的话，从字符串末尾开始截取
+
+$a='chen';
+echo substr($a,2,2);	//en
+--------------------------
+2.strchr()==strstr()---查找字符串的首次出现 (区分大小写)（从前往后）
+stristr()---不区分大小写
+strrchr()---查找字符串最后出现（从后往前）
+
+$a='cheHnhn';
+echo strstr($a,'H');		//Hnhn
+echo strstr($a,'h');		//heHnhn
+echo strstr($a,'H',true);	//che(5.3.0起)
+echo stristr($a,'h');		//heHnhn
+echo stristr($a,'H');		//heHnhn
+echo strrchr($a,'h');	//hn
+-----------------------------------------
+3.strpos()---查找字符串首次出现的位置 (区分大小写)（从前往后）
+stripos()---不区分大小写
+strrpos()---查找字符串最后出现（从后往前）
+
+$a='cheHnhn';
+echo strpos($a,'H');		//3
+echo stripos($a,'h');		//1
+echo strrpos($a,'h');		//5
+------------------------------------------
+5.strtok()---通过字符串把字符串拆分 
+
+string strtok  ( string $str  , string $token  )
+string strtok  ( string $token  )
+
+注意仅第一次调用 strtok 函数时使用 string 参数。后来每次调用 strtok，都将只使用 token 参数，因为它会记住它在字符串 string 中的位置。如果要重新开始分割一个新的字符串，你需要再次使用 string 来调用 strtok 函数，以便完成初始化工作。注意可以在 token 参数中使用多个字符。字符串将被该参数中任何一个字符分割
+
+$a='che,Hn,hn,0';
+$tok=strtok($a,',');			//输出
+while($tok!==false){		//che
+	echo '<br/>';		//Hn
+	echo $tok;		//hn
+	$tok=strtok(',');		//0
+}
+----------------------------------
+6.parse_str() --- 把字符串截取为变量
+
+$url="http://www.chen.com?uname=ruei&age=19&sex=man";
+$msg=substr($url,(strpos($url,'?')+1));
+parse_str($msg);
+echo $uname;		//ruei
+echo $age;		//19
+echo $sex;		//man
+
+7.chunk_split($str,int,[string])---将字符串分割成小块 
+
+$str='abcd';
+echo chunk_split($str,1,"abc\n");	//aabc babc cabc dabc	
+
+
+==========================================
+==4444=====================================
+1.字符串替换函数
+str_replace()--区分大小写，替换字符串或数组元素，4个参数
+str_ireplace()--不区分大小写
+
+$arr=array('chen','ruei','fu');
+$arr1=array('c','r','f');
+$arr2=array('C','R','F');
+$str='chenrueifu';
+echo str_replace('c','C',$str,$k);	//ChenRueiFu
+echo $k;				//3
+print_r(str_replace($arr1,$arr2,$arr,$k));	//[0]=Chen，[1]=Ruei，[2]=Fu
+echo $k;				//3
+--------------------------------------------
+strtr()---替换字符串中的任意字符
+
+$str='chenrueifu';
+$arr=array('c'=>'C','r'=>'R','f'=>'F');
+echo strtr($str,'c','C');	//Chenrueifu
+echo strtr($str,$arr);	//ChenRueiFu
+------------------------------------------------
+2.字符串比较函数
+
+strcmp(a,b)---区分大小写，比较字符串，a<b返回-1，a>b返回1
+strcasecmp()---不区分大小写
+strnatcmp()--按自然数进行比较
+strncmp(a,b,int)---指定位置进行字符串比较，比较前int个的字符串
+similar_text()---比较两个有多少字符相等，第三个参数变量返回相似百分比
+
+echo strcmp('chen','Chen');		//1
+echo strcasecmp('chen','Chen');	//0
+echo strcmp(10,2);			//-1
+echo strnatcmp(10,2);		//1
+echo strncmp('rueifu','rueiFu',3);	//0
+echo strncmp('rueifu','rueiFu',5);	//1
+echo similar_text('chenRuei','chenruei',$k);	//7(几个相同)
+echo $k;		//87.5(14/16)
+---------------------------------------------------
+3.字符串的统计函数
+
+substr_count()--查找一个字符串在另一个字符串中出现的次数(4个参数)
+第一个参数：string-字符串
+第二个参数：needle-要搜索的字符串
+第三个参数：可选，offset-开始搜索的位置
+第四个参数：可选，length-最大的搜索长度
+
+echo substr_count('chenchen','chen');		//2
+echo substr_count('chenchen','chen',3);	//1
+echo substr_count('chenchen','chen',3,4);	//0
+echo substr_count('chenchen','chen',3,5);	//1(小于长度5的)
+
+=====================================
+==5555================================
+转义的符号：单引号（'）、双引号（"）、反斜线（\）与 NUL（ NULL  字符）；只对半角符号作用
+addslashes(string)---在预定义字符串前添加反斜杠
+stripslashes(string)---把转义字符中的反斜杠删除
+
+$name='chen\'\'';
+echo $name.'<br/>';	//chen''
+echo addslashes($name);	//chen\'\'
+---------------添加的数据到数据库时，须转义-------------
+get_magic_quotes_gpc()---获取PHP.INI中是否开启自自动转义（插入数据时）
+ini_get_all();---获取php.ini文件中所有配置项数组
+
+echo '<pre>';
+print_r(ini_get_all());
+echo '</pre>';
+
+================================
+==666============================
+做数据备份的时候用！！！
+**********************************
+get_magic_quotes_runtime()---获取外部文件或数据库是否开启自自动转义（读取数据时）
+set_magic_quotes_runtime()---设置获取外部文件或数据库是否开启自自动转义（读取数据时）
+php5.4以上已废除
+************************************
+strip_tags()---从字符串中去除 HTML 和 PHP 标记 
+第二个参数：可选，指定不被去除的字符列表
+
+$str="<div style='color:red'>chen</div>";
+echo $str;	//红色chen
+echo strip_tags($str,'<span>');	//没有变色
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
