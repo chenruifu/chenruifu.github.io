@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>给定数组和数量输出的排列组合</title>
+</head>
+<body>
+    <h1>给到数组Array和需要输出的字符长度，返回所以可能的组合情况</h1>
+    <pre>
+        function(arr, num) {
+
+        }
+
+        例子：
+        arr =>  ['x', 'o'];
+        num => 2
+
+        return =>  ['xo','xx','oo','ox'];
+    </pre>
+
+    <script>
+        // 随机组合
+        function combine (arr, num) {
+            let result = arr;
+            function combineSub(thisArr) {
+                result = [];
+                // 双层循环
+                for(let t = 0, tMax = thisArr.length; t < tMax; t++){
+                    for(let i = 0, max = arr.length; i < max; i++) {
+                        result.push(`${thisArr[t]}${arr[i]}`);
+                    }
+                }
+            }
+            for(let i = 1; i < num; i++){
+                combineSub(result);
+            }
+            console.log(result)
+            return result;
+        }
+
+        // 测
+        combine(['X', 'O'], 3);
+    </script>
+</body>
+</html>

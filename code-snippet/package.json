@@ -1,0 +1,11 @@
+{
+  "name": "code-snippet",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "browser-sync start --server --files '**/*.css, **/*.html'"
+  },
+  "author": "",
+  "license": "ISC"
+}
